@@ -10,7 +10,8 @@ run_biotracker(
   jar_path = "/home/sa04ts/biotracker/jar/biotracker.jar",
   f_properties = "sim_01.properties",
   sim_dir = "sim_01/",
-  clean_output = TRUE
+  clean_output = TRUE,
+  tar_output = TRUE
 )
 }
 \arguments{
@@ -25,6 +26,8 @@ run_biotracker(
 \item{sim_dir}{Simulation directory}
 
 \item{clean_output}{Move files to appropriate subdirectories?}
+
+\item{tar_output}{Create tar.gz of all output?}
 }
 \value{
 Reporting only

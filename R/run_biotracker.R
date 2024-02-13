@@ -6,6 +6,7 @@
 #' @param f_properties Properties file
 #' @param sim_dir Simulation directory
 #' @param clean_output Move files to appropriate subdirectories?
+#' @param tar_output Create tar.gz of all output?
 #'
 #' @return Reporting only
 #' @export
@@ -15,7 +16,8 @@ run_biotracker <- function(jdk_path="/usr/local/java/jre1.8.0_211/bin/java",
                            jar_path="/home/sa04ts/biotracker/jar/biotracker.jar",
                            f_properties="sim_01.properties",
                            sim_dir="sim_01/",
-                           clean_output=TRUE) {
+                           clean_output=TRUE,
+                           tar_output=TRUE) {
 
   now <- Sys.time()
   cat("Starting biotracker:", format(now, "%F %T"), "\n")
@@ -42,6 +44,9 @@ run_biotracker <- function(jdk_path="/usr/local/java/jre1.8.0_211/bin/java",
     clean_out_dir("pstepsMature_", "pstepsMature")
     clean_out_dir("pstepsImmature_", "pstepsImmature")
     clean_out_dir("locations_", "locations")
+  }
+  if(tar_output) {
+    tar(paste0("../", basename(sim_dir), ".tar.gz"), dir(), compression="gzip")
   }
 
   setwd(proj_dir)

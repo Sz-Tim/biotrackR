@@ -6,7 +6,6 @@
 \usage{
 set_biotracker_properties(
   properties_file_path = NULL,
-  destinationDirectory = "out/",
   coordRef = "OSGB1936",
   datadir = "/media/archiver/common/sa01da-work/WeStCOMS2/Archive/",
   datadirPrefix = "netcdf_",
@@ -64,8 +63,6 @@ set_biotracker_properties(
 }
 \arguments{
 \item{properties_file_path}{filename for properties file; if NULL, character vector is returned only}
-
-\item{destinationDirectory}{Output directory}
 
 \item{coordRef}{Coordinate reference system}
 
@@ -170,6 +167,8 @@ set_biotracker_properties(
 \item{recordLocations}{Record hourly particle locations?}
 
 \item{recordArrivals}{Record particle arrivals to sites?}
+
+\item{destinationDirectory}{Output directory}
 
 \item{datadir2}{Secondary data directory}
 

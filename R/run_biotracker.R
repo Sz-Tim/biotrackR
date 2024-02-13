@@ -7,7 +7,7 @@
 #' @param sim_dir Simulation directory
 #' @param clean_output Move files to appropriate subdirectories?
 #'
-#' @return
+#' @return Reporting only
 #' @export
 #'
 run_biotracker <- function(jdk_path="/usr/local/java/jre1.8.0_211/bin/java",

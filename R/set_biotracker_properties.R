@@ -67,7 +67,6 @@
 #'
 set_biotracker_properties <- function(
     properties_file_path=NULL,
-    destinationDirectory="out/",
     coordRef="OSGB1936",
     datadir="/media/archiver/common/sa01da-work/WeStCOMS2/Archive/",
     datadirPrefix="netcdf_",
@@ -123,7 +122,6 @@ set_biotracker_properties <- function(
     recordArrivals="false"
 ) {
   params <- c(
-    destinationDirectory=destinationDirectory,
     coordRef=coordRef,
     datadir=datadir,
     datadirPrefix=datadirPrefix,

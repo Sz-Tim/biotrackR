@@ -26,6 +26,9 @@ run_biotracker(
 
 \item{clean_output}{Move files to appropriate subdirectories?}
 }
+\value{
+Reporting only
+}
 \description{
 Run biotracker
 }

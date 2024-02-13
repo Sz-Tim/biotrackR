@@ -32,7 +32,7 @@ load_connectivity <- function(f, site_names) {
 calc_influx <- function(data, dest_col, N_col, ...) {
   library(tidyverse)
   data |>
-    group_by(dest_col, ...) |>
+    group_by({{dest_col}}, ...) |>
     summarise(total=sum({{N_col}})) |>
     ungroup()
 }
@@ -77,7 +77,7 @@ calc_self_infection <- function(data, src_col, dest_col, N_col, ...) {
 calc_outflux <- function(data, src_col, N_col, ...) {
   library(tidyverse)
   data |>
-    group_by(src_col, ...) |>
+    group_by({{src_col}}, ...) |>
     summarise(total=sum({{N_col}})) |>
     ungroup()
 }

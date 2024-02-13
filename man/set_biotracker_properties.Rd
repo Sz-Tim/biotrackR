@@ -127,9 +127,9 @@ set_biotracker_properties(
 
 \item{D_hVert}{Vertical diffusion coefficient}
 
-\item{salinityThreshMin}{Lower salinity threshold for sinking (100% sink)}
+\item{salinityThreshMin}{Lower salinity threshold for sinking (all sink)}
 
-\item{salinityThreshMax}{Upper salinity threshold for sinking (0% sink)}
+\item{salinityThreshMax}{Upper salinity threshold for sinking (none sink)}
 
 \item{mortalityRate}{Mortality rate if salinityMort=false}
 

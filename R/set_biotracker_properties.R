@@ -1,5 +1,3 @@
-
-
 #' Generate properties for biotracker
 #'
 #' @param properties_file_path filename for properties file; if NULL, character vector is returned only
@@ -41,8 +39,8 @@
 #' @param variableDiffusion Include variable vertical diffusion?
 #' @param D_h Horizontal diffusion coefficient
 #' @param D_hVert Vertical diffusion coefficient
-#' @param salinityThreshMin Lower salinity threshold for sinking (100% sink)
-#' @param salinityThreshMax Upper salinity threshold for sinking (0% sink)
+#' @param salinityThreshMin Lower salinity threshold for sinking (all sink)
+#' @param salinityThreshMax Upper salinity threshold for sinking (none sink)
 #' @param mortalityRate Mortality rate if salinityMort=false
 #' @param salinityMort Calculate mortality based on salinity?
 #' @param swimLightLevel Should particles swim upward if light is sufficient?

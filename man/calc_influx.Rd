@@ -16,7 +16,7 @@ calc_influx(data, dest_col, N_col, ...)
 \item{...}{Grouping columns (unquoted)}
 }
 \value{
-Summarised dataframe with column \code{total} giving the sum. Note
+Summarised dataframe with column \code{influx} giving the sum. Note
 that this includes self infection.
 }
 \description{

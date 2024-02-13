@@ -25,7 +25,7 @@ load_connectivity <- function(f, site_names) {
 #' @param N_col Lice density (unquoted column name)
 #' @param ... Grouping columns (unquoted)
 #'
-#' @return Summarised dataframe with column \code{total} giving the sum. Note
+#' @return Summarised dataframe with column \code{influx} giving the sum. Note
 #' that this includes self infection.
 #' @export
 #'
@@ -33,7 +33,7 @@ calc_influx <- function(data, dest_col, N_col, ...) {
   library(tidyverse)
   data |>
     group_by({{dest_col}}, ...) |>
-    summarise(total=sum({{N_col}})) |>
+    summarise(influx=sum({{N_col}})) |>
     ungroup()
 }
 
@@ -48,15 +48,15 @@ calc_influx <- function(data, dest_col, N_col, ...) {
 #' @param N_col Lice density (unquoted column name)
 #' @param ... Grouping columns (unquoted)
 #'
-#' @return Summarised dataframe with column \code{total} giving the sum
+#' @return Summarised dataframe with column \code{self} giving the sum
 #' @export
 #'
 calc_self_infection <- function(data, src_col, dest_col, N_col, ...) {
   library(tidyverse)
   data |>
     filter({{src_col}} == {{dest_col}}) |>
-    group_by(...) |>
-    summarise(total=sum({{N_col}})) |>
+    group_by({{src_col}}, ...) |>
+    summarise(self=sum({{N_col}})) |>
     ungroup()
 }
 
@@ -70,7 +70,7 @@ calc_self_infection <- function(data, src_col, dest_col, N_col, ...) {
 #' @param N_col Lice density (unquoted column name)
 #' @param ... Grouping columns (unquoted)
 #'
-#' @return Summarised dataframe with column \code{total} giving the sum. Note
+#' @return Summarised dataframe with column \code{outflux} giving the sum. Note
 #' that this includes self infection.
 #' @export
 #'
@@ -78,6 +78,6 @@ calc_outflux <- function(data, src_col, N_col, ...) {
   library(tidyverse)
   data |>
     group_by({{src_col}}, ...) |>
-    summarise(total=sum({{N_col}})) |>
+    summarise(outflux=sum({{N_col}})) |>
     ungroup()
 }

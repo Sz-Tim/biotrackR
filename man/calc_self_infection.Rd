@@ -18,7 +18,7 @@ calc_self_infection(data, src_col, dest_col, N_col, ...)
 \item{...}{Grouping columns (unquoted)}
 }
 \value{
-Summarised dataframe with column \code{total} giving the sum
+Summarised dataframe with column \code{self} giving the sum
 }
 \description{
 Calculate self infection

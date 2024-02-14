@@ -20,9 +20,9 @@ run_biotracker <- function(jdk_path="/usr/local/java/jre1.8.0_211/bin/java",
                            tar_output=TRUE) {
 
   now <- Sys.time()
-  cat("Starting biotracker:", format(now, "%F %T"), "\n")
-  cat("  Properties:", f_properties, "\n")
-  cat("  Output dir:", sim_dir, "\n")
+  cat("\n--- Starting biotracker:", format(now, "%F %T"), "\n")
+  cat("---   Properties:", f_properties, "\n")
+  cat("---   Output dir:", sim_dir, "\n")
 
   proj_dir <- getwd()
   file.copy(javaLib_path, sim_dir, recursive=T, overwrite=T)
@@ -34,20 +34,30 @@ run_biotracker <- function(jdk_path="/usr/local/java/jre1.8.0_211/bin/java",
           stdout="stdout.txt")
 
   later <- Sys.time()
-  cat("Finished:", format(later, "%F %T"), "\n")
-  cat("  Run time:", round(later - now, 2), "minutes", "\n")
+  cat("--- Finished simulations:", format(later, "%F %T"), "\n")
+  cat("---   Run time:", round(later - now, 2), "minutes", "\n")
 
   if(clean_output) {
-    cat("Cleaning directory\n")
+    now_clean <- Sys.time()
+    cat("--- Cleaning directory:", format(now_clean, "%F %T"), "\n")
     clean_out_dir("arrivals_", "arrivals")
     clean_out_dir("connectivity_", "connectivity")
     clean_out_dir("pstepsMature_", "pstepsMature")
     clean_out_dir("pstepsImmature_", "pstepsImmature")
     clean_out_dir("locations_", "locations")
+    later_clean <- Sys.time()
+    cat("---   All files moved:", format(later_clean, "%F %T"), "\n")
   }
   if(tar_output) {
+    now_tar <- Sys.time()
+    cat("--- Making a tarball:", format(now_tar, "%F %T"), "\n")
     tar(paste0("../", basename(sim_dir), ".tar.gz"), dir(), compression="gzip")
+    cat("---   Created", paste0("../", basename(sim_dir), ".tar.gz"), "\n")
   }
+
+  later_final <- Sys.time()
+  cat("--- Complete:", format(later_final, "%F %T"), "\n")
+  cat("---   Total time:", round(later_final - now, 2), "minutes", "\n")
 
   setwd(proj_dir)
 }

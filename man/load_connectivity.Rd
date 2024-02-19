@@ -2,18 +2,18 @@
 % Please edit documentation in R/calc_connectivity.R
 \name{load_connectivity}
 \alias{load_connectivity}
-\title{Load pairwise connectivity matrices}
+\title{Load pairwise connectivity matrix}
 \usage{
 load_connectivity(f, site_names)
 }
 \arguments{
-\item{f}{Vector of filenames}
+\item{f}{Filename of connectivity matrix output by biotracker}
 
 \item{site_names}{Vector of site names; length(site_names) = ncol(connect_mx)}
 }
 \value{
-Dataframe with a column for each site (destinations), and rows for each site (source) x date combination
+Dataframe with a column for each site (destinations), and rows for each site (source), with an identifier column with the date
 }
 \description{
-Load pairwise connectivity matrices
+Load pairwise connectivity matrix
 }

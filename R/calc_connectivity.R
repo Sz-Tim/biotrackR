@@ -1,18 +1,16 @@
-#' Load pairwise connectivity matrices
+#' Load pairwise connectivity matrix
 #'
-#' @param f Vector of filenames
+#' @param f Filename of connectivity matrix output by biotracker
 #' @param site_names Vector of site names; length(site_names) = ncol(connect_mx)
 #'
-#' @return Dataframe with a column for each site (destinations), and rows for each site (source) x date combination
+#' @return Dataframe with a column for each site (destinations), and rows for each site (source), with an identifier column with the date
 #' @export
 #'
 load_connectivity <- function(f, site_names) {
   library(tidyverse)
-  f_base <- basename(f)
-  map_dfr(seq_along(f),
-          ~read_delim(f[.x], delim=" ", col_names=site_names, col_types="d") |>
-            mutate(source=factor(site_names, levels=site_names),
-                   date=ymd(str_split_fixed(f_base[.x], "_", 3)[,2])))
+  read_delim(f, delim=" ", col_names=site_names, col_types="d") |>
+    mutate(source=factor(site_names, levels=site_names),
+           date=ymd(str_split_fixed(basename(f), "_", 3)[,2]))
 }
 
 

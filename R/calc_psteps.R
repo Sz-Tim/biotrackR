@@ -19,10 +19,14 @@ load_psteps <- function(f, site_names=NULL) {
   if(is.null(site_names)) {
     # Densities already summed in column 2 by biotracker
     read_delim(f, delim=" ", col_select=1:2, col_types="d",
-               col_names=c("i", glue("wk_{str_sub(basename(f), 14, 21)}")))
+               col_names=c("i",
+                           paste0("wk_", str_sub(basename(f), 14, 21)))) |>
+      mutate(i=i+1) # Java uses 0-based indexing, R uses 1-based indexing
   } else {
     # Column for each release site
     read_delim(f, delim=" ", col_types="d",
-               col_names=c("i", glue("{site_names}_{str_sub(basename(f), 14, 21)}")))
+               col_names=c("i",
+                           paste(site_names, "_", str_sub(basename(f), 14, 21)))) |>
+      mutate(i=i+1) # Java uses 0-based indexing, R uses 1-based indexing
   }
 }

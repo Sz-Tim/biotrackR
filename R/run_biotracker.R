@@ -19,8 +19,8 @@ run_biotracker <- function(jdk_path="/usr/local/java/jre1.8.0_211/bin/java",
                            clean_output=TRUE,
                            tar_output=TRUE) {
 
-  now <- Sys.time()
-  cat("\n--- Starting biotracker:", format(now, "%F %T"), "\n")
+  begin <- Sys.time()
+  cat("\n--- Starting biotracker:", format(begin, "%F %T"), "\n")
   cat("---   Properties:", f_properties, "\n")
   cat("---   Output dir:", sim_dir, "\n")
 
@@ -34,12 +34,13 @@ run_biotracker <- function(jdk_path="/usr/local/java/jre1.8.0_211/bin/java",
           stdout="stdout.txt")
 
   later <- Sys.time()
+  begin_later <- round(later - begin, 2)
   cat("--- Finished simulations:", format(later, "%F %T"), "\n")
-  cat("---   Run time:", round(later - now, 2), "minutes", "\n")
+  cat("---   Run time:", begin_later, attr(begin_later, "units"), "\n")
 
   if(clean_output) {
-    now_clean <- Sys.time()
-    cat("--- Cleaning directory:", format(now_clean, "%F %T"), "\n")
+    begin_clean <- Sys.time()
+    cat("--- Cleaning directory:", format(begin_clean, "%F %T"), "\n")
     clean_out_dir("arrivals_", "arrivals")
     clean_out_dir("connectivity_", "connectivity")
     clean_out_dir("pstepsMature_", "pstepsMature")
@@ -49,15 +50,16 @@ run_biotracker <- function(jdk_path="/usr/local/java/jre1.8.0_211/bin/java",
     cat("---   All files moved:", format(later_clean, "%F %T"), "\n")
   }
   if(tar_output) {
-    now_tar <- Sys.time()
-    cat("--- Making a tarball:", format(now_tar, "%F %T"), "\n")
+    begin_tar <- Sys.time()
+    cat("--- Making a tarball:", format(begin_tar, "%F %T"), "\n")
     tar(paste0("../", basename(sim_dir), ".tar.gz"), dir(), compression="gzip")
     cat("---   Created", paste0("../", basename(sim_dir), ".tar.gz"), "\n")
   }
 
   later_final <- Sys.time()
+  begin_final <- round(later_final - begin, 2)
   cat("--- Complete:", format(later_final, "%F %T"), "\n")
-  cat("---   Total time:", round(later_final - now, 2), "minutes", "\n")
+  cat("---   Total time:", begin_final, attr(begin_final, "units"), "\n")
 
   setwd(proj_dir)
 }

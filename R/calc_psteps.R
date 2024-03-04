@@ -30,3 +30,54 @@ load_psteps <- function(f, site_names=NULL) {
       mutate(i=i+1) # Java uses 0-based indexing, R uses 1-based indexing
   }
 }
+
+
+
+
+
+
+
+#' Load particle steps for a set of simulations
+#'
+#' Particle steps from simulations organized into subdirectories within
+#' \code{out_dir} are loaded in wide format, with a column for each week and a
+#' row for each mesh element x simulation (sparse: only elements with particles).
+#'
+#' @param out_dir Main output directory containing simulation-specific subdirectories
+#' @param mesh_i Dataframe with mesh information including columns \code{i}=element and (optionally) \code{area}=element area
+#' @param sim_i Simulation metadata with column \code{sim} naming each simulation. These should also be the subdirectory names
+#' @param ncores Number of cores to use for parallel processing
+#' @param stage Life stage ("Mature" or "Immature")
+#' @param liceScale Multiplier for original pstep values
+#' @param per_m2 Logical: Scale values by element area?
+#' @param log Logical: ln(values)? Performed after area scaling
+#'
+#' @return Wide format dataframe
+#' @export
+#'
+load_psteps_simSets <- function(out_dir, mesh_i, sim_i, ncores=8,
+                                stage="Mature", liceScale=28.2*240,
+                                per_m2=TRUE, log=TRUE) {
+  library(tidyverse); library(glue); library(furrr)
+  plan(multisession, workers=ncores)
+  ps_wide <- map_dfr(sim_i$sim,
+                     ~dir(glue("{out_dir}/{.x}"), glue("psteps{stage}.*dat"),
+                          recursive=T, full.names=T) |>
+                       future_map(~load_psteps(.x)) |>
+                       reduce(full_join, by="i") |>
+                       mutate(sim=.x)) |>
+    arrange(sim, i) |>
+    select(sim, i, starts_with("wk_")) |>
+    mutate(across(starts_with("wk_"), ~.x*liceScale)) |>
+    left_join(mesh_i, by="i")
+  if(per_m2) {
+    ps_wide <- ps_wide |>
+      mutate(across(starts_with("wk_"), ~.x/area))
+  }
+  if(log) {
+    ps_wide <- ps_wide |>
+      mutate(across(starts_with("wk_"), ~log(.x)))
+  }
+  plan(sequential)
+  return(ps_wide)
+}

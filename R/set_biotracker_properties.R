@@ -55,6 +55,9 @@
 #' @param recordPsteps Record particle steps? Matrix with density/element
 #' @param splitPsteps Split Psteps by release location?
 #' @param pstepsInterval Psteps recording frequency (h)
+#' @param recordVertDistr Record vertical distribution of particles per element?
+#' @param vertDistrInterval Vert distribution recording frequency (h)
+#' @param vertDistrMax Maximum depth to record (\code{0:vertDistrMax}) with all deeper particles lumped into last group
 #' @param recordMovement Record movement details for sample of particles?
 #' @param recordElemActivity Record overall element/hourly particle activity?
 #' @param recordConnectivity Record connectivity between sites?
@@ -114,6 +117,9 @@ set_biotracker_properties <- function(
     recordPsteps="false",
     splitPsteps="false",
     pstepsInterval=168,
+    recordVertDistr="false",
+    vertDistrInterval=1,
+    vertDistrMax=20,
     recordMovement="false",
     recordElemActivity="true",
     recordConnectivity="true",
@@ -169,6 +175,9 @@ set_biotracker_properties <- function(
     recordPsteps=recordPsteps,
     splitPsteps=splitPsteps,
     pstepsInterval=pstepsInterval,
+    recordVertDistr=recordVertDistr,
+    vertDistrInterval=vertDistrInterval,
+    vertDistrMax=vertDistrMax,
     recordMovement=recordMovement,
     recordElemActivity=recordElemActivity,
     recordConnectivity=recordConnectivity,

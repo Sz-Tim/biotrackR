@@ -53,6 +53,9 @@ set_biotracker_properties(
   recordPsteps = "false",
   splitPsteps = "false",
   pstepsInterval = 168,
+  recordVertDistr = "false",
+  vertDistrInterval = 1,
+  vertDistrMax = 20,
   recordMovement = "false",
   recordElemActivity = "true",
   recordConnectivity = "true",
@@ -155,6 +158,12 @@ set_biotracker_properties(
 \item{splitPsteps}{Split Psteps by release location?}
 
 \item{pstepsInterval}{Psteps recording frequency (h)}
+
+\item{recordVertDistr}{Record vertical distribution of particles per element?}
+
+\item{vertDistrInterval}{Vert distribution recording frequency (h)}
+
+\item{vertDistrMax}{Maximum depth to record (\code{0:vertDistrMax}) with all deeper particles lumped into last group}
 
 \item{recordMovement}{Record movement details for sample of particles?}
 

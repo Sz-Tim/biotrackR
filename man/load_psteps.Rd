@@ -12,7 +12,7 @@ load_psteps(f, site_names = NULL)
 \item{site_names}{Vector of site names; length(site_names) = (ncol(pstepsFile)-1)}
 }
 \value{
-Dataframe with column \code{i} for mesh element, and colmns for particle densities named with either 'wk_' or the sitename plus the YYYYMMDD date (e.g., \code{wk_20190407}).
+Dataframe with column \code{i} for mesh element, and colmns for particle densities named with either 't_' or the sitename plus the YYYYMMDD date (e.g., \code{t_20190407}).
 }
 \description{
 If biotracker is run with \code{splitPsteps='true'}, output is a dataframe with

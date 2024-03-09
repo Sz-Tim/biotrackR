@@ -11,22 +11,23 @@
 #' @param f Filename of psteps file output by biotracker
 #' @param site_names Vector of site names; length(site_names) = (ncol(pstepsFile)-1)
 #'
-#' @return Dataframe with column \code{i} for mesh element, and colmns for particle densities named with either 'wk_' or the sitename plus the YYYYMMDD date (e.g., \code{wk_20190407}).
+#' @return Dataframe with column \code{i} for mesh element, and colmns for particle densities named with either 't_' or the sitename plus the YYYYMMDD date (e.g., \code{t_20190407}).
 #' @export
 #'
 load_psteps <- function(f, site_names=NULL) {
   library(tidyverse)
+  timestep <- str_sub(str_split_fixed(basename(f), "_", 3)[,3], 1, -5)
   if(is.null(site_names)) {
     # Densities already summed in column 2 by biotracker
     read_delim(f, delim=" ", col_select=1:2, col_types="d",
                col_names=c("i",
-                           paste0("wk_", str_sub(basename(f), 14, 21)))) |>
+                           paste0("t_", timestep))) |>
       mutate(i=i+1) # Java uses 0-based indexing, R uses 1-based indexing
   } else {
     # Column for each release site
     read_delim(f, delim=" ", col_types="d",
                col_names=c("i",
-                           paste(site_names, "_", str_sub(basename(f), 14, 21)))) |>
+                           paste(site_names, "_", timestep))) |>
       mutate(i=i+1) # Java uses 0-based indexing, R uses 1-based indexing
   }
 }
@@ -67,16 +68,16 @@ load_psteps_simSets <- function(out_dir, mesh_i, sim_i, ncores=8,
                        reduce(full_join, by="i") |>
                        mutate(sim=.x)) |>
     arrange(sim, i) |>
-    select(sim, i, starts_with("wk_")) |>
-    mutate(across(starts_with("wk_"), ~.x*liceScale)) |>
+    select(sim, i, starts_with("t_")) |>
+    mutate(across(starts_with("t_"), ~.x*liceScale)) |>
     left_join(mesh_i, by="i")
   if(per_m2) {
     ps_wide <- ps_wide |>
-      mutate(across(starts_with("wk_"), ~.x/area))
+      mutate(across(starts_with("t_"), ~.x/area))
   }
   if(log) {
     ps_wide <- ps_wide |>
-      mutate(across(starts_with("wk_"), ~log(.x)))
+      mutate(across(starts_with("t_"), ~log(.x)))
   }
   plan(sequential)
   return(ps_wide)

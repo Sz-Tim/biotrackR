@@ -30,7 +30,9 @@ run_biotracker <- function(jdk_path="/usr/local/java/jre1.8.0_211/bin/java",
   setwd(sim_dir)
 
   system2(jdk_path,
-          c("-Xmx8192m -Xms4096m -jar", jar_path, f_properties),
+          c("-Xmx8192m -Xms4096m -jar",
+            paste0('"', jar_path, '"'),
+            paste0('"', f_properties, '"')),
           stdout="stdout.txt")
 
   later <- Sys.time()
@@ -46,6 +48,8 @@ run_biotracker <- function(jdk_path="/usr/local/java/jre1.8.0_211/bin/java",
     clean_out_dir("pstepsMature_", "pstepsMature")
     clean_out_dir("pstepsImmature_", "pstepsImmature")
     clean_out_dir("locations_", "locations")
+    clean_out_dir("vertDistrMature_", "vertDistrMature")
+    clean_out_dir("vertDistrImmature_", "vertDistrImmature")
     later_clean <- Sys.time()
     cat("---   All files moved:", format(later_clean, "%F %T"), "\n")
   }

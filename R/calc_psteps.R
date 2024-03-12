@@ -118,7 +118,7 @@ calc_psteps_diff <- function(ps_wide, sims_comp, ncores=4) {
       d <- x[2,] - x[1,]
       d[na_i[1,] & !na_i[2,]] <- 9999
       d[!na_i[1,] & na_i[2,]] <- -9999
-      d[na_i[1,] & na_i[2,]] <- NA
+      d[na_i[1,] & na_i[2,]] <- NA_real_
       return(d)
     }
   )

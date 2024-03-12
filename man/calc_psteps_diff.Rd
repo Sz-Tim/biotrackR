@@ -4,7 +4,7 @@
 \alias{calc_psteps_diff}
 \title{Calculate difference in particle densities between to simulations}
 \usage{
-calc_psteps_diff(ps_wide, sims_comp, ncores)
+calc_psteps_diff(ps_wide, sims_comp, ncores = 4)
 }
 \arguments{
 \item{ps_wide}{Output from \code{load_psteps_simSets()} or similar, with

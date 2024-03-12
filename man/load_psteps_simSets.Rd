@@ -8,7 +8,7 @@ load_psteps_simSets(
   out_dir,
   mesh_i,
   sim_i,
-  ncores = 8,
+  ncores = 4,
   stage = "Mature",
   liceScale = 28.2 * 240,
   per_m2 = TRUE,

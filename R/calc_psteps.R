@@ -133,7 +133,7 @@ calc_psteps_diff <- function(ps_wide, sims_comp, ncores=4) {
   psdiff_wide <- ps_wide |>
     full_join(expand_grid(i=unique(ps_wide$i), sim=sims_comp)) |>
     arrange(i, sim) |>
-    nest(data=starts_with("wk_"), .by=i) |>
+    nest(data=starts_with("t_"), .by=i) |>
     mutate(diff=future_map(data, crate_diff, .options=opts)) |>
     select(-data) |>
     unnest(diff)

@@ -82,3 +82,54 @@ load_psteps_simSets <- function(out_dir, mesh_i, sim_i, ncores=8,
   plan(sequential)
   return(ps_wide)
 }
+
+
+
+
+
+
+
+
+#' Calculate difference in particle densities between to simulations
+#'
+#' @param ps_wide Output from \code{load_psteps_simSets()} or similar, with
+#'   columns \code{i} with element indexes, \code{sim} with simulation
+#'   identifier, and columns \code{t_*} with particle densities per timestep
+#'   \code{t}
+#' @param sims_comp Vector of length two indicating which simulations to
+#'   compare, corresponding to values in column \code{sim}
+#' @param ncores Number of cores for parallel processing using the \code{furrr}
+#'   package
+#'
+#' @return Dataframe with one row per element in column \code{i} and columns
+#'   \code{t_*} with differences. Note that the difference is \code{last() -
+#'   first()}, with order by R default (i.e., \code{sort(sims_comp)}) and _NOT_
+#'   the order given in \code{sims_comp}. Elements where \code{is.na(first())}
+#'   return \code{9999}, elements where \code{is.na(last())} return
+#'   \code{-9999}.
+#' @export
+#'
+calc_psteps_diff <- function(ps_wide, sims_comp, ncores) {
+  library(tidyverse); library(furrr)
+  plan(multisession, gc=T, workers=ncores)
+
+  ps_wide <- ps_wide |>
+    select(i, sim, starts_with("t_")) |>
+    filter(sim %in% sims_comp)
+  gc()
+  psdiff_wide <- ps_wide |>
+    full_join(expand_grid(i=unique(ps_wide$i), sim=sims_comp)) |>
+    arrange(i, sim) |>
+    group_by(i) |>
+    group_split() |>
+    future_map_dfr(
+      ~summarise(.x, i=first(i),
+                 across(starts_with("t_"),
+                        ~case_when(is.na(first(.x)) ~ 9999,
+                                   is.na(last(.x)) ~ -9999,
+                                   !is.na(first(.x)) & !is.na(last(.x)) ~ last(.x)-first(.x)))))
+  plan(sequential)
+
+  return(psdiff_wide)
+}
+

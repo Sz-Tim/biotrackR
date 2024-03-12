@@ -2,6 +2,7 @@
 
 export(calc_influx)
 export(calc_outflux)
+export(calc_psteps_diff)
 export(calc_self_infection)
 export(clean_out_dir)
 export(load_connectivity)

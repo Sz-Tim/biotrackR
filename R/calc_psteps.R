@@ -110,24 +110,34 @@ load_psteps_simSets <- function(out_dir, mesh_i, sim_i, ncores=4,
 #' @export
 #'
 calc_psteps_diff <- function(ps_wide, sims_comp, ncores=4) {
-  library(tidyverse); library(furrr)
+  library(tidyverse); library(furrr); library(carrier)
+
+  crate_diff <- crate(
+    function(x) {
+      na_i <- is.na(x)
+      d <- x[2,] - x[1,]
+      d[na_i[1,] & !na_i[2,]] <- 9999
+      d[!na_i[1,] & na_i[2,]] <- -9999
+      d[na_i[1,] & na_i[2,]] <- NA
+      return(d)
+    }
+  )
+  opts <- furrr_options(globals = FALSE)
   plan(multisession, gc=T, workers=ncores)
 
   ps_wide <- ps_wide |>
     select(i, sim, starts_with("t_")) |>
     filter(sim %in% sims_comp)
   gc()
+
   psdiff_wide <- ps_wide |>
     full_join(expand_grid(i=unique(ps_wide$i), sim=sims_comp)) |>
     arrange(i, sim) |>
-    group_by(i) |>
-    group_split() |>
-    future_map_dfr(
-      ~summarise(.x, i=first(i),
-                 across(starts_with("t_"),
-                        ~case_when(is.na(first(.x)) ~ 9999,
-                                   is.na(last(.x)) ~ -9999,
-                                   !is.na(first(.x)) & !is.na(last(.x)) ~ last(.x)-first(.x)))))
+    nest(data=starts_with("wk_"), .by=i) |>
+    mutate(diff=future_map(data, crate_diff, .options=opts)) |>
+    select(-data) |>
+    unnest(diff)
+
   plan(sequential)
 
   return(psdiff_wide)

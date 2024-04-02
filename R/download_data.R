@@ -19,9 +19,9 @@ download_lice_counts <- function(begin_ymd, end_ymd, out_file) {
   lice_url <- paste0("https://utility.arcgis.com/usrsvcs/servers/",
                      "8999c2e86c7246cb93b420e810458293/rest/services/Secure/",
                      "Sealice/MapServer/2/query?f=json&where=1%3D1&","
-                     returnGeometry=false&spatialRel=esriSpatialRelIntersects&","
-                     outFields=*&orderByFields=WEEK_BEGINNING%20DESC&outSR=4326&","
-                     resultOffset=0&resultRecordCount=100000")
+                     returnGeometry=false&spatialRel=esriSpatialRelIntersects&",
+                     "outFields=*&orderByFields=WEEK_BEGINNING%20DESC&outSR=4326&",
+                     "resultOffset=0&resultRecordCount=100000")
   download.file(lice_url, "lice_counts.json")
   data_df <- fromJSON("lice_counts.json")$features$attributes |>
     clean_names(case="small_camel") |>

@@ -2,7 +2,7 @@
 #'
 #' @param properties_file_path filename for properties file; if NULL, character vector is returned only
 #' @param destinationDirectory Output directory
-#' @param coordRef Coordinate reference system
+#' @param coordOS Use OSGB1936 (EPSG 27700)? 'false' = WGS84 (EPSG 4326)
 #' @param datadir Primary data directory
 #' @param datadirPrefix Primary data file prefix
 #' @param datadirSuffix Primary data file suffix
@@ -27,7 +27,6 @@
 #' @param duplicateLastDay TRUE; duplicates final day of hydrodynamic files
 #' @param recordsPerFile1 Records per hydrdynamic file
 #' @param dt Time step
-#' @param verticalDynamics Include vertical dynamics?
 #' @param maxDepth Limit for particle depth (m, positive = deeper)
 #' @param parallelThreads Number of threads
 #' @param releaseScenario 1 = consistent release across time steps
@@ -70,7 +69,7 @@
 #'
 set_biotracker_properties <- function(
     properties_file_path=NULL,
-    coordRef="OSGB1936",
+    coordOS="true",
     datadir="/media/archiver/common/sa01da-work/WeStCOMS2/Archive/",
     datadirPrefix="netcdf_",
     datadirSuffix="",
@@ -88,7 +87,6 @@ set_biotracker_properties <- function(
     duplicateLastDay="true",
     recordsPerFile1=25,
     dt=3600,
-    verticalDynamics="true",
     maxDepth=10000,
     parallelThreads=4,
     releaseScenario=1,
@@ -128,7 +126,7 @@ set_biotracker_properties <- function(
     recordArrivals="false"
 ) {
   params <- c(
-    coordRef=coordRef,
+    coordOS=coordOS,
     datadir=datadir,
     datadirPrefix=datadirPrefix,
     datadirSuffix=datadirSuffix,
@@ -146,7 +144,6 @@ set_biotracker_properties <- function(
     duplicateLastDay=duplicateLastDay,
     recordsPerFile1=recordsPerFile1,
     dt=dt,
-    verticalDynamics=verticalDynamics,
     maxDepth=maxDepth,
     parallelThreads=parallelThreads,
     releaseScenario=releaseScenario,

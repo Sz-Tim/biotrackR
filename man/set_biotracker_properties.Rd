@@ -6,7 +6,7 @@
 \usage{
 set_biotracker_properties(
   properties_file_path = NULL,
-  coordRef = "OSGB1936",
+  coordOS = "true",
   datadir = "/media/archiver/common/sa01da-work/WeStCOMS2/Archive/",
   datadirPrefix = "netcdf_",
   datadirSuffix = "",
@@ -24,7 +24,6 @@ set_biotracker_properties(
   duplicateLastDay = "true",
   recordsPerFile1 = 25,
   dt = 3600,
-  verticalDynamics = "true",
   maxDepth = 10000,
   parallelThreads = 4,
   releaseScenario = 1,
@@ -67,7 +66,7 @@ set_biotracker_properties(
 \arguments{
 \item{properties_file_path}{filename for properties file; if NULL, character vector is returned only}
 
-\item{coordRef}{Coordinate reference system}
+\item{coordOS}{Use OSGB1936 (EPSG 27700)? 'false' = WGS84 (EPSG 4326)}
 
 \item{datadir}{Primary data directory}
 
@@ -102,8 +101,6 @@ set_biotracker_properties(
 \item{recordsPerFile1}{Records per hydrdynamic file}
 
 \item{dt}{Time step}
-
-\item{verticalDynamics}{Include vertical dynamics?}
 
 \item{maxDepth}{Limit for particle depth (m, positive = deeper)}
 

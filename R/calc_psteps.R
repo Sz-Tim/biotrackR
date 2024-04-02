@@ -160,10 +160,8 @@ calc_psteps_diff <- function(ps_wide, sims_comp, ncores=4) {
 #' @param ncores Number of cores for parallelization with furrr
 #' @param mesh_sf \code{NULL} or mesh sf object
 #'
-#' @return
+#' @return Dataframe with averaged particle densities according to the \code{grp_col} columns.
 #' @export
-#'
-#' @examples
 calc_psteps_avg <- function(ps_long, y_col, grp_col=NULL, ncores=4, mesh_sf=NULL) {
   library(tidyverse); library(furrr); library(carrier)
 

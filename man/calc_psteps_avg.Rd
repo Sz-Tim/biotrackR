@@ -17,6 +17,9 @@ calc_psteps_avg(ps_long, y_col, grp_col = NULL, ncores = 4, mesh_sf = NULL)
 
 \item{mesh_sf}{\code{NULL} or mesh sf object}
 }
+\value{
+Dataframe with averaged particle densities according to the \code{grp_col} columns.
+}
 \description{
 Calculate average particle densities
 }

@@ -20,3 +20,6 @@ Success message if csv is correctly saved
 Accessed through aquaculture.scotland.gov.uk. Downloads a csv of monthly fish
 biomass on each farm.
 }
+\details{
+http://aquaculture.scotland.gov.uk/data/data.aspx
+}

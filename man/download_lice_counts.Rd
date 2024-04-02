@@ -18,8 +18,13 @@ Success message if csv is correctly saved
 }
 \description{
 Accessed through aquaculture.scotland.gov.uk. Downloads a json file from the
-ArcGIS online map viewer, then processes that into a csv. Note that only data
-from March 2021 are available through this function. Older data must be
-downloaded manually from the website. Data are the weekly average number of
-adult female Lepeophtheirus salmonis reported by the salmon companies.
+ArcGIS online map viewer, then processes that into a csv.
+}
+\details{
+Data from before 2021-March-29 must be downloaded manually from the website.
+Data are the weekly average number of adult female Lepeophtheirus salmonis
+reported by the salmon companies.
+
+http://aquaculture.scotland.gov.uk/data/data.aspx
+https://scottishepa.maps.arcgis.com/apps/webappviewer/index.html?id=2218824350e5470e8026076d4138da58
 }

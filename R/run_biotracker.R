@@ -7,6 +7,7 @@
 #' @param sim_dir Simulation directory
 #' @param clean_output Move files to appropriate subdirectories?
 #' @param tar_output Create tar.gz of all output?
+#' @param save_tar_only Remove uncompressed folder and keep only tar.gz?
 #'
 #' @return Reporting only
 #' @export
@@ -17,7 +18,8 @@ run_biotracker <- function(jdk_path="/usr/local/java/jre1.8.0_211/bin/java",
                            f_properties="sim_01.properties",
                            sim_dir="sim_01/",
                            clean_output=TRUE,
-                           tar_output=TRUE) {
+                           tar_output=TRUE,
+                           save_tar_only=FALSE) {
 
   begin <- Sys.time()
   cat("\n--- Starting biotracker:", format(begin, "%F %T"), "\n")
@@ -58,6 +60,12 @@ run_biotracker <- function(jdk_path="/usr/local/java/jre1.8.0_211/bin/java",
     cat("--- Making a tarball:", format(begin_tar, "%F %T"), "\n")
     tar(paste0("../", basename(sim_dir), ".tar.gz"), dir(), compression="gzip")
     cat("---   Created", paste0("../", basename(sim_dir), ".tar.gz"), "\n")
+  }
+  if(save_tar_only) {
+    begin_rm <- Sys.time()
+    cat("--- Removing uncompressed files:", format(begin_rm, "%F %T"), "\n")
+    unlink(sim_dir, recursive=T)
+    cat("---   Removed", sim_dir, "\n")
   }
 
   later_final <- Sys.time()

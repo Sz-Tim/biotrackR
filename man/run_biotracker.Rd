@@ -11,7 +11,8 @@ run_biotracker(
   f_properties = "sim_01.properties",
   sim_dir = "sim_01/",
   clean_output = TRUE,
-  tar_output = TRUE
+  tar_output = TRUE,
+  save_tar_only = FALSE
 )
 }
 \arguments{
@@ -28,6 +29,8 @@ run_biotracker(
 \item{clean_output}{Move files to appropriate subdirectories?}
 
 \item{tar_output}{Create tar.gz of all output?}
+
+\item{save_tar_only}{Remove uncompressed folder and keep only tar.gz?}
 }
 \value{
 Reporting only

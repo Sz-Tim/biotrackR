@@ -1,5 +1,27 @@
 
-#' Load psteps (particle densities per mesh element)
+
+
+#' Load (sparse) vertical distributions in each element
+#'
+#' @param f Filename of the vertDistr* file output by biotracker
+#' @param liceScale Multiplier for the original density values
+#'
+#' @return Dataframe with column \code{i} for mesh element, \code{z} for depth bin, \code{hour} for the simulation hour, and \code{value} with the particle density.
+#' @export
+#'
+load_vertDistr <- function(f, liceScale=28.2*240) {
+  library(tidyverse)
+  timestep <- str_sub(str_split_fixed(basename(f), "_", 3)[,3], 1, -5)
+  read_csv(f, col_types="iid") |>
+    mutate(i=i+1,
+           hour=timestep,
+           value=value*liceScale)
+}
+
+
+
+
+#' Load (sparse) particle densities per mesh element (psteps)
 #'
 #' If biotracker is run with \code{splitPsteps='true'}, output is a dataframe with
 #' column 'i' for mesh element and a column for each release site giving the
@@ -10,26 +32,73 @@
 #'
 #' @param f Filename of psteps file output by biotracker
 #' @param site_names Vector of site names; length(site_names) = (ncol(pstepsFile)-1)
+#' @param liceScale Multiplier for original pstep values
 #'
-#' @return Dataframe with column \code{i} for mesh element, and colmns for particle densities named with either 't_' or the sitename plus the YYYYMMDD date (e.g., \code{t_20190407}).
+#' @return Dataframe with column \code{i} for mesh element, and columns for particle densities named with either 't_' or the sitename plus the YYYYMMDD date (e.g., \code{t_20190407}).
 #' @export
 #'
-load_psteps <- function(f, site_names=NULL) {
+load_psteps <- function(f, site_names=NULL, liceScale=28.2*240) {
   library(tidyverse)
   timestep <- str_sub(str_split_fixed(basename(f), "_", 3)[,3], 1, -5)
   if(is.null(site_names)) {
-    # Densities already summed in column 2 by biotracker
-    read_csv(f, col_select=1:2, col_types="d",
+    # Densities already summed in column 3 by biotracker; element index in col 1
+    read_csv(f, col_select=c(1,3), col_types="id",
              col_names=c("i",
                          paste0("t_", timestep))) |>
-      mutate(i=i+1) # Java uses 0-based indexing, R uses 1-based indexing
+      mutate(i=i+1) |>  # Java uses 0-based indexing, R uses 1-based indexing|>
+      mutate(across(starts_with("t_"), ~.x*liceScale))
   } else {
+    stop("biotracker hasn't yet been updated for individual site output.")
     # Column for each release site
     read_csv(f, col_types="d",
              col_names=c("i",
                          paste(site_names, "_", timestep))) |>
-      mutate(i=i+1) # Java uses 0-based indexing, R uses 1-based indexing
+      mutate(i=i+1) |>  # Java uses 0-based indexing, R uses 1-based indexing|>
+      mutate(across(starts_with("t_"), ~.x*liceScale)) # TODO: Not correct.
   }
+}
+
+
+
+
+
+#' Load (sparse) vertical distributions for a set of simulations
+#'
+#' @param out_dir Main output directory containing simulation-specific subdirectories
+#' @param mesh_i Dataframe with mesh information including columns \code{i}=element and (optionally) \code{area}=element area
+#' @param sim_i Simulation metadata with column \code{sim} naming each simulation. These should also be the subdirectory names
+#' @param ncores Number of cores to use for parallel processing
+#' @param stage Life stage ("Mature" or "Immature")
+#' @param liceScale Multiplier for original pstep values
+#' @param per_m2 Logical: Scale values by element area?
+#' @param log Logical: ln(values)? Performed after area scaling
+#'
+#' @return Dataframe
+#' @export
+#'
+load_vertDistr_simSets <- function(out_dir, mesh_i, sim_i, ncores=4,
+                                   stage="Mature", liceScale=28.2*240,
+                                   per_m2=FALSE, log=FALSE) {
+  library(tidyverse); library(glue); library(furrr)
+  plan(multisession, workers=ncores)
+  z_df <- map_dfr(sim_i$sim,
+                  ~dir(glue("{out_dir}/{.x}"), glue("vertDistr{stage}.*csv"),
+                       recursive=T, full.names=T) |>
+                    future_map_dfr(~load_vertDistr(.x, liceScale=liceScale)) |>
+                    mutate(sim=.x)) |>
+    arrange(sim, i) |>
+    select(sim, i, z, hour, value) |>
+    left_join(mesh_i, by="i")
+  if(per_m2) {
+    z_df <- z_df |>
+      mutate(value=value/area)
+  }
+  if(log) {
+    z_df <- z_df |>
+      mutate(value=log(value))
+  }
+  plan(sequential)
+  return(z_df)
 }
 
 
@@ -38,7 +107,7 @@ load_psteps <- function(f, site_names=NULL) {
 
 
 
-#' Load particle steps for a set of simulations
+#' Load (sparse) particle densities for a set of simulations
 #'
 #' Particle steps from simulations organized into subdirectories within
 #' \code{out_dir} are loaded in wide format, with a column for each week and a
@@ -64,12 +133,11 @@ load_psteps_simSets <- function(out_dir, mesh_i, sim_i, ncores=4,
   ps_wide <- map_dfr(sim_i$sim,
                      ~dir(glue("{out_dir}/{.x}"), glue("psteps{stage}.*csv"),
                           recursive=T, full.names=T) |>
-                       future_map(~load_psteps(.x)) |>
+                       future_map(~load_psteps(.x, liceScale=liceScale)) |>
                        reduce(full_join, by="i") |>
                        mutate(sim=.x)) |>
     arrange(sim, i) |>
     select(sim, i, starts_with("t_")) |>
-    mutate(across(starts_with("t_"), ~.x*liceScale)) |>
     left_join(mesh_i, by="i")
   if(per_m2) {
     ps_wide <- ps_wide |>
@@ -82,6 +150,8 @@ load_psteps_simSets <- function(out_dir, mesh_i, sim_i, ncores=4,
   plan(sequential)
   return(ps_wide)
 }
+
+
 
 
 

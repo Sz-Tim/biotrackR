@@ -17,8 +17,8 @@
 #' @param mesh2Type Secondary mesh type
 #' @param location2 Secondary domain
 #' @param minchVersion2 Secondary mesh WeStCOMS version
-#' @param sitefile Site location file (tsv)
-#' @param siteDensityPath Site lice density path
+#' @param sitefile Site location file (csv with headers)
+#' @param siteDensityPath Site lice density path (csv with headers; row = site, col = date)
 #' @param verboseSetUp Additional info
 #' @param start_ymd Start date YYYYMMDD
 #' @param numberOfDays Number of days to simulate
@@ -77,8 +77,8 @@ set_biotracker_properties <- function(
     mesh1Type="FVCOM",
     location="westcoms",
     minchVersion=2,
-    sitefile="../../data/farm_sites.tsv",
-    siteDensityPath="../../data/lice_daily_2019-04-01_2023-09-30.tsv",
+    sitefile="../../data/farm_sites.csv",
+    siteDensityPath="../../data/lice_daily_2019-04-01_2023-12-31.csv",
     verboseSetUp="false",
     start_ymd=20190401,
     numberOfDays=7,

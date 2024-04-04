@@ -8,7 +8,7 @@
 #'
 load_connectivity <- function(f, site_names) {
   library(tidyverse)
-  read_delim(f, delim=" ", col_names=site_names, col_types="d") |>
+  read_csv(f, col_names=site_names, col_types="d") |>
     mutate(source=factor(site_names, levels=site_names),
            date=ymd(str_split_fixed(basename(f), "_", 3)[,2]))
 }

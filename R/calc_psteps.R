@@ -19,15 +19,15 @@ load_psteps <- function(f, site_names=NULL) {
   timestep <- str_sub(str_split_fixed(basename(f), "_", 3)[,3], 1, -5)
   if(is.null(site_names)) {
     # Densities already summed in column 2 by biotracker
-    read_delim(f, delim=" ", col_select=1:2, col_types="d",
-               col_names=c("i",
-                           paste0("t_", timestep))) |>
+    read_csv(f, col_select=1:2, col_types="d",
+             col_names=c("i",
+                         paste0("t_", timestep))) |>
       mutate(i=i+1) # Java uses 0-based indexing, R uses 1-based indexing
   } else {
     # Column for each release site
-    read_delim(f, delim=" ", col_types="d",
-               col_names=c("i",
-                           paste(site_names, "_", timestep))) |>
+    read_csv(f, col_types="d",
+             col_names=c("i",
+                         paste(site_names, "_", timestep))) |>
       mutate(i=i+1) # Java uses 0-based indexing, R uses 1-based indexing
   }
 }
@@ -62,7 +62,7 @@ load_psteps_simSets <- function(out_dir, mesh_i, sim_i, ncores=4,
   library(tidyverse); library(glue); library(furrr)
   plan(multisession, workers=ncores)
   ps_wide <- map_dfr(sim_i$sim,
-                     ~dir(glue("{out_dir}/{.x}"), glue("psteps{stage}.*dat"),
+                     ~dir(glue("{out_dir}/{.x}"), glue("psteps{stage}.*csv"),
                           recursive=T, full.names=T) |>
                        future_map(~load_psteps(.x)) |>
                        reduce(full_join, by="i") |>

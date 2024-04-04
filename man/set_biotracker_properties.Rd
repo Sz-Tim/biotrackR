@@ -14,8 +14,8 @@ set_biotracker_properties(
   mesh1Type = "FVCOM",
   location = "westcoms",
   minchVersion = 2,
-  sitefile = "../../data/farm_sites.tsv",
-  siteDensityPath = "../../data/lice_daily_2019-04-01_2023-09-30.tsv",
+  sitefile = "../../data/farm_sites.csv",
+  siteDensityPath = "../../data/lice_daily_2019-04-01_2023-12-31.csv",
   verboseSetUp = "false",
   start_ymd = 20190401,
   numberOfDays = 7,
@@ -82,9 +82,9 @@ set_biotracker_properties(
 
 \item{minchVersion}{Primary mesh WeStCOMS version}
 
-\item{sitefile}{Site location file (tsv)}
+\item{sitefile}{Site location file (csv with headers)}
 
-\item{siteDensityPath}{Site lice density path}
+\item{siteDensityPath}{Site lice density path (csv with headers; row = site, col = date)}
 
 \item{verboseSetUp}{Additional info}
 

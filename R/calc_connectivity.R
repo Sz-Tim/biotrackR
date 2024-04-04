@@ -1,16 +1,19 @@
 #' Load pairwise connectivity matrix
 #'
 #' @param f Filename of connectivity matrix output by biotracker
-#' @param site_names Vector of site names; length(site_names) = ncol(connect_mx)
+#' @param site_names Vector of site names; order corresponds to integers in connectivity csvs
+#' @param liceScale Multiplier for original particle density values
 #'
-#' @return Dataframe with a column for each site (destinations), and rows for each site (source), with an identifier column with the date
+#' @return Dataframe with a column for source, destination, particle density transferred, and an identifier column with the date
 #' @export
 #'
-load_connectivity <- function(f, site_names) {
+load_connectivity <- function(f, site_names, liceScale=28.2*240) {
   library(tidyverse)
-  read_csv(f, col_names=site_names, col_types="d") |>
-    mutate(source=factor(site_names, levels=site_names),
-           date=ymd(str_split_fixed(basename(f), "_", 3)[,2]))
+  read_csv(f, col_types="iid") |>
+    mutate(source=factor(source, labels=site_names),
+           destination=factor(destination, labels=site_names),
+           date=ymd(str_split_fixed(basename(f), "_", 3)[,2]),
+           value=value*liceScale)
 }
 
 

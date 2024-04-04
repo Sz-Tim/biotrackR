@@ -2,17 +2,19 @@
 % Please edit documentation in R/calc_psteps.R
 \name{load_psteps}
 \alias{load_psteps}
-\title{Load psteps (particle densities per mesh element)}
+\title{Load (sparse) particle densities per mesh element (psteps)}
 \usage{
-load_psteps(f, site_names = NULL)
+load_psteps(f, site_names = NULL, liceScale = 28.2 * 240)
 }
 \arguments{
 \item{f}{Filename of psteps file output by biotracker}
 
 \item{site_names}{Vector of site names; length(site_names) = (ncol(pstepsFile)-1)}
+
+\item{liceScale}{Multiplier for original pstep values}
 }
 \value{
-Dataframe with column \code{i} for mesh element, and colmns for particle densities named with either 't_' or the sitename plus the YYYYMMDD date (e.g., \code{t_20190407}).
+Dataframe with column \code{i} for mesh element, and columns for particle densities named with either 't_' or the sitename plus the YYYYMMDD date (e.g., \code{t_20190407}).
 }
 \description{
 If biotracker is run with \code{splitPsteps='true'}, output is a dataframe with

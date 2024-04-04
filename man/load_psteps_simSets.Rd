@@ -2,7 +2,7 @@
 % Please edit documentation in R/calc_psteps.R
 \name{load_psteps_simSets}
 \alias{load_psteps_simSets}
-\title{Load particle steps for a set of simulations}
+\title{Load (sparse) particle densities for a set of simulations}
 \usage{
 load_psteps_simSets(
   out_dir,

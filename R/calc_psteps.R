@@ -42,11 +42,14 @@ load_psteps <- function(f, site_names=NULL, liceScale=28.2*240) {
   timestep <- str_sub(str_split_fixed(basename(f), "_", 3)[,3], 1, -5)
   if(is.null(site_names)) {
     # Densities already summed in column 3 by biotracker; element index in col 1
-    read_csv(f, col_select=c(1,3), col_types="id",
-             col_names=c("i",
-                         paste0("t_", timestep))) |>
-      mutate(i=i+1) |>  # Java uses 0-based indexing, R uses 1-based indexing|>
-      mutate(across(starts_with("t_"), ~.x*liceScale))
+    f_df <- read_csv(f, col_select=c(1,3), col_types="id") |>
+      rename_with(.fn=~paste0("t_", timestep), .cols="value")
+    if(nrow(f_df) > 0) {
+      f_df <- f_df |>
+        mutate(i=i+1) |>  # Java uses 0-based indexing, R uses 1-based indexing|>
+        mutate(across(starts_with("t_"), ~.x*liceScale))
+    }
+    return(f_df)
   } else {
     stop("biotracker hasn't yet been updated for individual site output.")
     # Column for each release site
@@ -135,7 +138,8 @@ load_psteps_simSets <- function(out_dir, mesh_i, sim_i, ncores=4,
                           recursive=T, full.names=T) |>
                        future_map(~load_psteps(.x, liceScale=liceScale)) |>
                        reduce(full_join, by="i") |>
-                       mutate(sim=.x)) |>
+                       mutate(sim=.x,
+                              across(starts_with("t_"), as.numeric))) |>
     arrange(sim, i) |>
     select(sim, i, starts_with("t_")) |>
     left_join(mesh_i, by="i")

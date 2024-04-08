@@ -7,7 +7,7 @@
 #' @return Dataframe with a column for source, destination, particle density transferred, and an identifier column with the date
 #' @export
 #'
-load_connectivity2 <- function(f, site_names, liceScale=28.2*240) {
+load_connectivity <- function(f, site_names, liceScale=28.2*240) {
   library(tidyverse)
   read_csv(f, col_types="iid") |>
     mutate(source=factor(source, levels=seq_along(site_names)-1, labels=site_names),

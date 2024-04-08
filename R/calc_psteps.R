@@ -75,17 +75,22 @@ load_psteps <- function(f, site_names=NULL, liceScale=28.2*240) {
 #' @param liceScale Multiplier for original pstep values
 #' @param per_m2 Logical: Scale values by element area?
 #' @param log Logical: ln(values)? Performed after area scaling
+#' @param date_rng Date range; vector with min and max dates in YYYY-MM-DD format
 #'
 #' @return Dataframe
 #' @export
 #'
 load_vertDistr_simSets <- function(out_dir, mesh_i, sim_i, ncores=4,
                                    stage="Mature", liceScale=28.2*240,
-                                   per_m2=FALSE, log=FALSE) {
+                                   per_m2=FALSE, log=FALSE,
+                                   date_rng) {
   library(tidyverse); library(glue); library(furrr)
+  date_grep <- seq(ymd(date_rng[1]), ymd(date_rng[2]), by=1) |>
+    paste0(collapse="|") |> str_remove_all("-")
   plan(multisession, workers=ncores)
   z_df <- map_dfr(sim_i$sim,
-                  ~dir(glue("{out_dir}/{.x}"), glue("vertDistr{stage}.*csv"),
+                  ~dir(glue("{out_dir}/{.x}"),
+                       glue("vertDistr{stage}_{date_grep}.*csv"),
                        recursive=T, full.names=T) |>
                     future_map_dfr(~load_vertDistr(.x, liceScale=liceScale)) |>
                     mutate(sim=.x)) |>

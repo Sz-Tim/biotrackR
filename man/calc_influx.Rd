@@ -16,8 +16,9 @@ calc_influx(data, dest_col, N_col, ...)
 \item{...}{Grouping columns (unquoted)}
 }
 \value{
-Summarised dataframe with column \code{influx} giving the sum. Note
-that this includes self infection.
+Summarised dataframe with column \code{influx} giving the sum, and
+  \code{N_influx} giving the number of farms contributing infection pressure
+  to each destination. Note that this includes self infection.
 }
 \description{
 Calculate influx

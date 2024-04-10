@@ -26,15 +26,17 @@ load_connectivity <- function(f, site_names, liceScale=28.2*240) {
 #' @param N_col Lice density (unquoted column name)
 #' @param ... Grouping columns (unquoted)
 #'
-#' @return Summarised dataframe with column \code{influx} giving the sum. Note
-#' that this includes self infection.
+#' @return Summarised dataframe with column \code{influx} giving the sum, and
+#'   \code{N_influx} giving the number of farms contributing infection pressure
+#'   to each destination. Note that this includes self infection.
 #' @export
 #'
 calc_influx <- function(data, dest_col, N_col, ...) {
   library(tidyverse)
   data |>
     group_by({{dest_col}}, ...) |>
-    summarise(influx=sum({{N_col}})) |>
+    summarise(influx=sum({{N_col}}),
+              N_influx=n()) |>
     ungroup()
 }
 
@@ -71,14 +73,16 @@ calc_self_infection <- function(data, src_col, dest_col, N_col, ...) {
 #' @param N_col Lice density (unquoted column name)
 #' @param ... Grouping columns (unquoted)
 #'
-#' @return Summarised dataframe with column \code{outflux} giving the sum. Note
-#' that this includes self infection.
+#' @return Summarised dataframe with column \code{outflux} giving the sum and
+#'   \code{N_outflux} giving the number of farms receiving infection pressure
+#'   from each source. Note that this includes self infection.
 #' @export
 #'
 calc_outflux <- function(data, src_col, N_col, ...) {
   library(tidyverse)
   data |>
     group_by({{src_col}}, ...) |>
-    summarise(outflux=sum({{N_col}})) |>
+    summarise(outflux=sum({{N_col}}),
+              N_outflux=n()) |>
     ungroup()
 }

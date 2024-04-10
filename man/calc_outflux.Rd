@@ -16,8 +16,9 @@ calc_outflux(data, src_col, N_col, ...)
 \item{...}{Grouping columns (unquoted)}
 }
 \value{
-Summarised dataframe with column \code{outflux} giving the sum. Note
-that this includes self infection.
+Summarised dataframe with column \code{outflux} giving the sum and
+  \code{N_outflux} giving the number of farms receiving infection pressure
+  from each source. Note that this includes self infection.
 }
 \description{
 Calculate outflux

@@ -4,7 +4,7 @@
 \alias{calc_outflux}
 \title{Calculate outflux}
 \usage{
-calc_outflux(data, src_col, N_col, ...)
+calc_outflux(data, src_col, N_col, dest_areas = NULL, ...)
 }
 \arguments{
 \item{data}{Dataframe in long format}
@@ -13,12 +13,16 @@ calc_outflux(data, src_col, N_col, ...)
 
 \item{N_col}{Lice density (unquoted column name)}
 
+\item{dest_areas}{Dataframe with columns for site names and catchment areas}
+
 \item{...}{Grouping columns (unquoted)}
 }
 \value{
 Summarised dataframe with column \code{outflux} giving the sum and
   \code{N_outflux} giving the number of farms receiving infection pressure
-  from each source. Note that this includes self infection.
+  from each source. Note that this includes self infection. If
+  \code{dest_areas} is provided, additionally includes a column with outflux
+  scaled by the square meter area of each destination.
 }
 \description{
 Calculate outflux

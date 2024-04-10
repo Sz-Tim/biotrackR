@@ -71,18 +71,32 @@ calc_self_infection <- function(data, src_col, dest_col, N_col, ...) {
 #' @param data Dataframe in long format
 #' @param src_col Source site (unquoted column name)
 #' @param N_col Lice density (unquoted column name)
+#' @param dest_areas Dataframe with columns for site names and catchment areas
 #' @param ... Grouping columns (unquoted)
 #'
 #' @return Summarised dataframe with column \code{outflux} giving the sum and
 #'   \code{N_outflux} giving the number of farms receiving infection pressure
-#'   from each source. Note that this includes self infection.
+#'   from each source. Note that this includes self infection. If
+#'   \code{dest_areas} is provided, additionally includes a column with outflux
+#'   scaled by the square meter area of each destination.
 #' @export
 #'
-calc_outflux <- function(data, src_col, N_col, ...) {
+calc_outflux <- function(data, src_col, N_col, dest_areas=NULL, ...) {
   library(tidyverse)
-  data |>
-    group_by({{src_col}}, ...) |>
-    summarise(outflux=sum({{N_col}}),
-              N_outflux=n()) |>
-    ungroup()
+  if(is.null(dest_areas)) {
+    data |>
+      group_by({{src_col}}, ...) |>
+      summarise(outflux=sum({{N_col}}),
+                N_outflux=n()) |>
+      ungroup()
+  } else {
+    data |>
+      left_join(dest_areas) |>
+      group_by({{src_col}}, ...) |>
+      summarise(outflux=sum({{N_col}}),
+                outflux_m2=sum({{N_col}}/area),
+                N_outflux=n()) |>
+      ungroup()
+  }
+
 }

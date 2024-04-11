@@ -169,11 +169,11 @@ load_psteps_simSets <- function(out_dir, mesh_i, sim_i, ncores=4,
 
 
 
-#' Calculate difference in particle densities between to simulations
+#' Calculate difference in log particle densities between to simulations
 #'
 #' @param ps_wide Output from \code{load_psteps_simSets()} or similar, with
 #'   columns \code{i} with element indexes, \code{sim} with simulation
-#'   identifier, and columns \code{t_*} with particle densities per timestep
+#'   identifier, and columns \code{t_*} with log particle densities per timestep
 #'   \code{t}
 #' @param sims_comp Vector of length two indicating which simulations to
 #'   compare, corresponding to values in column \code{sim}
@@ -188,7 +188,7 @@ load_psteps_simSets <- function(out_dir, mesh_i, sim_i, ncores=4,
 #'   \code{-9999}.
 #' @export
 #'
-calc_psteps_diff <- function(ps_wide, sims_comp, ncores=4) {
+calc_psteps_diff_lnN <- function(ps_wide, sims_comp, ncores=4) {
   library(tidyverse); library(furrr); library(carrier)
 
   crate_diff <- crate(
@@ -222,6 +222,63 @@ calc_psteps_diff <- function(ps_wide, sims_comp, ncores=4) {
   return(psdiff_wide)
 }
 
+
+
+
+
+
+#' Calculate difference in particle densities between to simulations
+#'
+#' @param ps_wide Output from \code{load_psteps_simSets()} or similar, with
+#'   columns \code{i} with element indexes, \code{sim} with simulation
+#'   identifier, and columns \code{t_*} with log particle densities per timestep
+#'   \code{t}
+#' @param sims_comp Vector of length two indicating which simulations to
+#'   compare, corresponding to values in column \code{sim}
+#' @param ncores Number of cores for parallel processing using the \code{furrr}
+#'   package
+#'
+#' @return Dataframe with one row per element in column \code{i} and columns
+#'   \code{t_*} with differences. Note that the difference is \code{last() -
+#'   first()}, with order by R default (i.e., \code{sort(sims_comp)}) and _NOT_
+#'   the order given in \code{sims_comp}. Elements where \code{is.na(first())}
+#'   return \code{9999}, elements where \code{is.na(last())} return
+#'   \code{-9999}.
+#' @export
+#'
+calc_psteps_diff <- function(ps_wide, sims_comp, ncores=4) {
+  library(tidyverse); library(furrr); library(carrier)
+
+  crate_diff <- crate(
+    function(x) {
+      na_i <- is.na(x)
+      d <- x[2,] - x[1,]
+      d[na_i[1,] & !na_i[2,]] <- x[2,]
+      d[!na_i[1,] & na_i[2,]] <- -x[1,]
+      d[na_i[1,] & na_i[2,]] <- NA_real_
+      return(d)
+    }
+  )
+  opts <- furrr_options(globals = FALSE)
+  plan(multisession, gc=T, workers=ncores)
+
+  ps_wide <- ps_wide |>
+    select(i, sim, starts_with("t_")) |>
+    filter(sim %in% sims_comp)
+  gc()
+
+  psdiff_wide <- ps_wide |>
+    full_join(expand_grid(i=unique(ps_wide$i), sim=sims_comp)) |>
+    arrange(i, sim) |>
+    nest(data=starts_with("t_"), .by=i) |>
+    mutate(diff=future_map(data, crate_diff, .options=opts)) |>
+    select(-data) |>
+    unnest(diff)
+
+  plan(sequential)
+
+  return(psdiff_wide)
+}
 
 
 

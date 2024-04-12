@@ -33,7 +33,8 @@ set_biotracker_properties(
   startDepth = 1,
   fixDepth = "false",
   stepsPerStep = 30,
-  variableDiffusion = "false",
+  variableDh = "false",
+  variableDhV = "false",
   D_h = 0.1,
   D_hVert = 0.001,
   salinityThreshMin = 23,
@@ -60,6 +61,7 @@ set_biotracker_properties(
   recordElemActivity = "true",
   recordConnectivity = "true",
   connectivityInterval = 24,
+  connectivityThresh = 100,
   recordLocations = "false",
   recordArrivals = "false"
 )
@@ -119,7 +121,9 @@ set_biotracker_properties(
 
 \item{stepsPerStep}{RK4 steps per timestep}
 
-\item{variableDiffusion}{Include variable vertical diffusion?}
+\item{variableDh}{Include variable horizontal diffusion? Uses WeStCOMS viscofh field}
+
+\item{variableDhV}{Include variable vertical diffusion? Uses WeStCOMS kh field}
 
 \item{D_h}{Horizontal diffusion coefficient}
 
@@ -172,6 +176,8 @@ set_biotracker_properties(
 \item{recordConnectivity}{Record connectivity between sites?}
 
 \item{connectivityInterval}{Connectivity recording frequency (h)}
+
+\item{connectivityThresh}{Distance threshold for connectivity recording}
 
 \item{recordLocations}{Record hourly particle locations?}
 

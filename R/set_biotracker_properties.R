@@ -35,7 +35,8 @@
 #' @param setStartDepth Set particle starting depth?
 #' @param startDepth Particle starting depth
 #' @param stepsPerStep RK4 steps per timestep
-#' @param variableDiffusion Include variable vertical diffusion?
+#' @param variableDh Include variable horizontal diffusion? Uses WeStCOMS viscofh field
+#' @param variableDhV Include variable vertical diffusion? Uses WeStCOMS kh field
 #' @param D_h Horizontal diffusion coefficient
 #' @param D_hVert Vertical diffusion coefficient
 #' @param salinityThreshMin Lower salinity threshold for sinking (all sink)
@@ -62,6 +63,7 @@
 #' @param recordElemActivity Record overall element/hourly particle activity?
 #' @param recordConnectivity Record connectivity between sites?
 #' @param connectivityInterval Connectivity recording frequency (h)
+#' @param connectivityThresh Distance threshold for connectivity recording
 #' @param recordLocations Record hourly particle locations?
 #' @param recordArrivals Record particle arrivals to sites?
 #'
@@ -97,7 +99,8 @@ set_biotracker_properties <- function(
     startDepth=1,
     fixDepth="false",
     stepsPerStep=30,
-    variableDiffusion="false",
+    variableDh="false",
+    variableDhV="false",
     D_h=0.1,
     D_hVert=0.001,
     salinityThreshMin=23,
@@ -124,6 +127,7 @@ set_biotracker_properties <- function(
     recordElemActivity="true",
     recordConnectivity="true",
     connectivityInterval=24,
+    connectivityThresh=100,
     recordLocations="false",
     recordArrivals="false"
 ) {
@@ -182,6 +186,7 @@ set_biotracker_properties <- function(
     recordElemActivity=recordElemActivity,
     recordConnectivity=recordConnectivity,
     connectivityInterval=connectivityInterval,
+    connectivityThresh=connectivityThresh,
     recordLocations=recordLocations,
     recordArrivals=recordArrivals
   )

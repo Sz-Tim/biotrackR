@@ -142,7 +142,7 @@ load_psteps_simSets <- function(out_dir, mesh_i, sim_i, ncores=4,
                      ~dir(glue("{out_dir}/{.x}"), glue("psteps{stage}.*csv"),
                           recursive=T, full.names=T) |>
                        future_map(~load_psteps(.x, liceScale=liceScale)) |>
-                       reduce(full_join, by="i") |>
+                       reduce(full_join, by="i", .init=tibble(i=NA_integer_)) |>
                        mutate(sim=.x,
                               across(starts_with("t_"), as.numeric))) |>
     arrange(sim, i) |>

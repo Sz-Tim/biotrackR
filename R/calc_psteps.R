@@ -90,11 +90,11 @@ load_vertDistr_simSets <- function(out_dir, mesh_i, sim_i, ncores=4,
   plan(multisession, workers=ncores)
   z_df <- map_dfr(sim_i$sim,
                   ~dir(glue("{out_dir}/{.x}"),
-                       glue("vertDistr{stage}_{date_grep}.*csv"),
+                       glue("vertDistr{stage}_({date_grep}).*csv"),
                        recursive=T, full.names=T) |>
                     future_map_dfr(~load_vertDistr(.x, liceScale=liceScale)) |>
                     mutate(sim=.x)) |>
-    arrange(sim, i) |>
+    arrange(sim, i, z) |>
     select(sim, i, z, hour, value) |>
     left_join(mesh_i, by="i")
   if(per_m2) {

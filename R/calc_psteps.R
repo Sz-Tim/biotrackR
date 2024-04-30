@@ -74,7 +74,7 @@ load_psteps <- function(f, site_names=NULL, liceScale=28.2*240) {
 #' @param stage Life stage ("Mature" or "Immature")
 #' @param liceScale Multiplier for original pstep values
 #' @param per_m2 Logical: Scale values by element area?
-#' @param log Logical: ln(values)? Performed after area scaling
+#' @param trans Transform values? Options are NULL, "log", or "4th_rt". Performed after area scaling
 #' @param date_rng Date range; vector with min and max dates in YYYY-MM-DD format
 #'
 #' @return Dataframe
@@ -82,7 +82,7 @@ load_psteps <- function(f, site_names=NULL, liceScale=28.2*240) {
 #'
 load_vertDistr_simSets <- function(out_dir, mesh_i, sim_i, ncores=4,
                                    stage="Mature", liceScale=28.2*240,
-                                   per_m2=FALSE, log=FALSE,
+                                   per_m2=FALSE, trans=NULL,
                                    date_rng) {
   library(tidyverse); library(glue); library(furrr)
   date_grep <- seq(ymd(date_rng[1]), ymd(date_rng[2]), by=1) |>
@@ -101,9 +101,15 @@ load_vertDistr_simSets <- function(out_dir, mesh_i, sim_i, ncores=4,
     z_df <- z_df |>
       mutate(value=value/area)
   }
-  if(log) {
-    z_df <- z_df |>
-      mutate(value=log(value))
+
+  if(!is.null(trans)) {
+    if(trans=="log") {
+      z_df <- z_df |>
+        mutate(value=log(value))
+    } else if(trans=="4th_rt") {
+      z_df <- z_df |>
+        mutate(value=value^0.25)
+    }
   }
   plan(sequential)
   return(z_df)
@@ -128,14 +134,14 @@ load_vertDistr_simSets <- function(out_dir, mesh_i, sim_i, ncores=4,
 #' @param stage Life stage ("Mature" or "Immature")
 #' @param liceScale Multiplier for original pstep values
 #' @param per_m2 Logical: Scale values by element area?
-#' @param log Logical: ln(values)? Performed after area scaling
+#' @param trans Transform values? Options are NULL, "log", or "4th_rt". Performed after area scaling
 #'
 #' @return Wide format dataframe
 #' @export
 #'
 load_psteps_simSets <- function(out_dir, mesh_i, sim_i, ncores=4,
                                 stage="Mature", liceScale=28.2*240,
-                                per_m2=TRUE, log=TRUE) {
+                                per_m2=TRUE, trans=NULL) {
   library(tidyverse); library(glue); library(furrr)
   plan(multisession, workers=ncores)
   ps_wide <- map_dfr(sim_i$sim,
@@ -152,9 +158,14 @@ load_psteps_simSets <- function(out_dir, mesh_i, sim_i, ncores=4,
     ps_wide <- ps_wide |>
       mutate(across(starts_with("t_"), ~.x/area))
   }
-  if(log) {
-    ps_wide <- ps_wide |>
-      mutate(across(starts_with("t_"), ~log(.x)))
+  if(!is.null(trans)) {
+    if(trans=="log") {
+      ps_wide <- ps_wide |>
+        mutate(across(starts_with("t_"), ~log(.x)))
+    } else if(trans=="4th_rt") {
+      ps_wide <- ps_wide |>
+        mutate(across(starts_with("t_"), ~.x^0.25))
+    }
   }
   plan(sequential)
   return(ps_wide)

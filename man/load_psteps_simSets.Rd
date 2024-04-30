@@ -12,7 +12,7 @@ load_psteps_simSets(
   stage = "Mature",
   liceScale = 28.2 * 240,
   per_m2 = TRUE,
-  log = TRUE
+  trans = NULL
 )
 }
 \arguments{
@@ -30,7 +30,7 @@ load_psteps_simSets(
 
 \item{per_m2}{Logical: Scale values by element area?}
 
-\item{log}{Logical: ln(values)? Performed after area scaling}
+\item{trans}{Transform values? Options are NULL, "log", or "4th_rt". Performed after area scaling}
 }
 \value{
 Wide format dataframe

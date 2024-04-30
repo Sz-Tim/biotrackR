@@ -12,7 +12,7 @@ load_vertDistr_simSets(
   stage = "Mature",
   liceScale = 28.2 * 240,
   per_m2 = FALSE,
-  log = FALSE,
+  trans = NULL,
   date_rng
 )
 }
@@ -31,7 +31,7 @@ load_vertDistr_simSets(
 
 \item{per_m2}{Logical: Scale values by element area?}
 
-\item{log}{Logical: ln(values)? Performed after area scaling}
+\item{trans}{Transform values? Options are NULL, "log", or "4th_rt". Performed after area scaling}
 
 \item{date_rng}{Date range; vector with min and max dates in YYYY-MM-DD format}
 }

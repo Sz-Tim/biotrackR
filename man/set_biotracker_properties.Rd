@@ -46,6 +46,8 @@ set_biotracker_properties(
   vertSwimSpeedStd = 1e-04,
   sinkingRateMean = 5e-04,
   sinkingRateStd = 1e-04,
+  eggTemp_b0 = 28.2,
+  eggTemp_b1 = 0,
   viabletime = -1,
   maxParticleAge = -1,
   viableDegreeDays = 40,
@@ -143,9 +145,13 @@ set_biotracker_properties(
 
 \item{vertSwimSpeedStd}{SD for upward swim speed (m/s)}
 
-\item{sinkingRateMean}{Mean downward sinking speed (m/s)}
+\item{sinkingRateMean}{Mean downward swimming speed (m/s)}
 
-\item{sinkingRateStd}{SD for downward sinking speed (m/s)}
+\item{sinkingRateStd}{SD for downward swimming speed (m/s)}
+
+\item{eggTemp_b0}{Intercept for temperature-dependent egg production}
+
+\item{eggTemp_b1}{Slope for temperature-dependent egg production}
 
 \item{viabletime}{Time at which particles become viable (h)}
 

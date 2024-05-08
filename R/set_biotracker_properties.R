@@ -46,8 +46,10 @@
 #' @param swimLightLevel Should particles swim upward if light is sufficient?
 #' @param vertSwimSpeedMean Mean upward swim speed (m/s)
 #' @param vertSwimSpeedStd SD for upward swim speed (m/s)
-#' @param sinkingRateMean Mean downward sinking speed (m/s)
-#' @param sinkingRateStd SD for downward sinking speed (m/s)
+#' @param sinkingRateMean Mean downward swimming speed (m/s)
+#' @param sinkingRateStd SD for downward swimming speed (m/s)
+#' @param eggTemp_b0 Intercept for temperature-dependent egg production
+#' @param eggTemp_b1 Slope for temperature-dependent egg production
 #' @param viabletime Time at which particles become viable (h)
 #' @param maxParticleAge Time at which particles die (h)
 #' @param viableDegreeDays Degree days at which particles become viable
@@ -112,6 +114,8 @@ set_biotracker_properties <- function(
     vertSwimSpeedStd=0.0001,
     sinkingRateMean=0.0005,
     sinkingRateStd=0.0001,
+    eggTemp_b0=28.2,
+    eggTemp_b1=0,
     viabletime=-1,
     maxParticleAge=-1,
     viableDegreeDays=40,
@@ -172,6 +176,8 @@ set_biotracker_properties <- function(
     vertSwimSpeedStd=vertSwimSpeedStd,
     sinkingRateMean=sinkingRateMean,
     sinkingRateStd=sinkingRateStd,
+    eggTemp_b0=eggTemp_b0,
+    eggTemp_b1=eggTemp_b1,
     viabletime=viabletime,
     maxParticleAge=maxParticleAge,
     viableDegreeDays=viableDegreeDays,

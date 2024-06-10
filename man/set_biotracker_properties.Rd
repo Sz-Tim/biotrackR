@@ -15,7 +15,9 @@ set_biotracker_properties(
   location = "westcoms",
   minchVersion = 2,
   sitefile = "../../data/farm_sites.csv",
-  siteDensityPath = "../../data/lice_daily_2019-04-01_2023-12-31.csv",
+  sitefileEnd = "../../data/farm_sites.csv",
+  siteDensityPath = "",
+  daylightPath = "",
   verboseSetUp = "false",
   start_ymd = 20190401,
   numberOfDays = 7,
@@ -89,7 +91,11 @@ set_biotracker_properties(
 
 \item{sitefile}{Site location file (csv with headers)}
 
+\item{sitefileEnd}{Site end location file (csv with headers)}
+
 \item{siteDensityPath}{Site lice density path (csv with headers; row = site, col = date)}
+
+\item{daylightPath}{File with daylight hours (row = day, column 1 = sunrise hour, column 2 = sunset hour)}
 
 \item{verboseSetUp}{Additional info}
 

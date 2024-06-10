@@ -18,7 +18,9 @@
 #' @param location2 Secondary domain
 #' @param minchVersion2 Secondary mesh WeStCOMS version
 #' @param sitefile Site location file (csv with headers)
+#' @param sitefileEnd Site end location file (csv with headers)
 #' @param siteDensityPath Site lice density path (csv with headers; row = site, col = date)
+#' @param daylightPath File with daylight hours (row = day, column 1 = sunrise hour, column 2 = sunset hour)
 #' @param verboseSetUp Additional info
 #' @param start_ymd Start date YYYYMMDD
 #' @param numberOfDays Number of days to simulate
@@ -83,7 +85,9 @@ set_biotracker_properties <- function(
     location="westcoms",
     minchVersion=2,
     sitefile="../../data/farm_sites.csv",
-    siteDensityPath="../../data/lice_daily_2019-04-01_2023-12-31.csv",
+    sitefileEnd="../../data/farm_sites.csv",
+    siteDensityPath="",
+    daylightPath="",
     verboseSetUp="false",
     start_ymd=20190401,
     numberOfDays=7,
@@ -145,7 +149,9 @@ set_biotracker_properties <- function(
     location=location,
     minchVersion=minchVersion,
     sitefile=sitefile,
+    sitefileEnd=sitefileEnd,
     siteDensityPath=siteDensityPath,
+    daylightPath=daylightPath,
     verboseSetUp=verboseSetUp,
     start_ymd=start_ymd,
     numberOfDays=numberOfDays,

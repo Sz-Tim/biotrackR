@@ -4,12 +4,14 @@
 \alias{load_connectivity}
 \title{Load pairwise connectivity matrix}
 \usage{
-load_connectivity(f, site_names, liceScale = 28.2 * 240)
+load_connectivity(f, source_names, dest_names = NULL, liceScale = 28.2 * 240)
 }
 \arguments{
 \item{f}{Filename of connectivity matrix output by biotracker}
 
-\item{site_names}{Vector of site names; order corresponds to integers in connectivity csvs}
+\item{source_names}{Vector of site names; order corresponds to integers in connectivity csvs}
+
+\item{dest_names}{Vector of site names; order corresponds to integers in connectivity csvs}
 
 \item{liceScale}{Multiplier for original particle density values}
 }

@@ -54,6 +54,7 @@ set_biotracker_properties(
   maxParticleAge = -1,
   viableDegreeDays = 40,
   maxDegreeDays = 150,
+  recordImmature = "false",
   recordPsteps = "false",
   splitPsteps = "false",
   pstepsInterval = 168,
@@ -167,6 +168,8 @@ set_biotracker_properties(
 
 \item{maxDegreeDays}{Degree days at which particles die}
 
+\item{recordImmature}{Record immature particles in addition to mature? Affects psteps & vertDistr}
+
 \item{recordPsteps}{Record particle steps? Matrix with density/element}
 
 \item{splitPsteps}{Split Psteps by release location?}
@@ -185,7 +188,7 @@ set_biotracker_properties(
 
 \item{recordElemActivity}{Record overall element/hourly particle activity?}
 
-\item{recordConnectivity}{Record connectivity between sites?}
+\item{recordConnectivity}{Record connectivity (mature particles only) between sites?}
 
 \item{connectivityInterval}{Connectivity recording frequency (h)}
 

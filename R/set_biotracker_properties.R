@@ -56,6 +56,7 @@
 #' @param maxParticleAge Time at which particles die (h)
 #' @param viableDegreeDays Degree days at which particles become viable
 #' @param maxDegreeDays Degree days at which particles die
+#' @param recordImmature Record immature particles in addition to mature? Affects psteps & vertDistr
 #' @param recordPsteps Record particle steps? Matrix with density/element
 #' @param splitPsteps Split Psteps by release location?
 #' @param pstepsInterval Psteps recording frequency (h)
@@ -65,7 +66,7 @@
 #' @param vertDistrMax Maximum depth to record (\code{0:vertDistrMax}) with all deeper particles lumped into last group
 #' @param recordMovement Record movement details for sample of particles?
 #' @param recordElemActivity Record overall element/hourly particle activity?
-#' @param recordConnectivity Record connectivity between sites?
+#' @param recordConnectivity Record connectivity (mature particles only) between sites?
 #' @param connectivityInterval Connectivity recording frequency (h)
 #' @param connectivityThresh Distance threshold for connectivity recording
 #' @param recordLocations Record hourly particle locations?
@@ -124,6 +125,7 @@ set_biotracker_properties <- function(
     maxParticleAge=-1,
     viableDegreeDays=40,
     maxDegreeDays=150,
+    recordImmature="false",
     recordPsteps="false",
     splitPsteps="false",
     pstepsInterval=168,
@@ -188,6 +190,7 @@ set_biotracker_properties <- function(
     maxParticleAge=maxParticleAge,
     viableDegreeDays=viableDegreeDays,
     maxDegreeDays=maxDegreeDays,
+    recordImmature=recordImmature,
     recordPsteps=recordPsteps,
     splitPsteps=splitPsteps,
     pstepsInterval=pstepsInterval,

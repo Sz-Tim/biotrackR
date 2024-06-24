@@ -48,8 +48,16 @@
 #' @param swimLightLevel Should particles swim upward if light is sufficient?
 #' @param vertSwimSpeedMean Mean upward swim speed (m/s)
 #' @param vertSwimSpeedStd SD for upward swim speed (m/s)
+#' @param vertSwimSpeedCopepodidMean Mean upward swim speed (m/s); ignored if vertSwimSpeedMean != NULL
+#' @param vertSwimSpeedCopepodidStd SD for upward swim speed (m/s); ignored if vertSwimSpeedStd != NULL
+#' @param vertSwimSpeedNaupliusMean Mean upward swim speed (m/s); ignored if vertSwimSpeedMean != NULL
+#' @param vertSwimSpeedNaupliusStd SD for upward swim speed (m/s); ignored if vertSwimSpeedStd != NULL
 #' @param sinkingRateMean Mean downward swimming speed (m/s)
 #' @param sinkingRateStd SD for downward swimming speed (m/s)
+#' @param sinkingRateCopepodidMean Mean downward swimming speed (m/s); ignored if sinkingRateMean != NULL
+#' @param sinkingRateCopepodidStd SD for downward swimming speed (m/s); ignored if sinkingRateStd != NULL
+#' @param sinkingRateNaupliusMean Mean downward swimming speed (m/s); ignored if sinkingRateMean != NULL
+#' @param sinkingRateNaupliusStd SD for downward swimming speed (m/s); ignored if sinkingRateStd != NULL
 #' @param eggTemp_b0 Intercept for temperature-dependent egg production
 #' @param eggTemp_b1 Slope for temperature-dependent egg production
 #' @param viabletime Time at which particles become viable (h)
@@ -115,10 +123,18 @@ set_biotracker_properties <- function(
     mortalityRate=0.01,
     salinityMort="true",
     swimLightLevel="true",
-    vertSwimSpeedMean=-0.0005,
-    vertSwimSpeedStd=0.0001,
-    sinkingRateMean=0.0005,
-    sinkingRateStd=0.0001,
+    vertSwimSpeedMean=NULL,
+    vertSwimSpeedStd=NULL,
+    vertSwimSpeedCopepodidMean=-0.0005,
+    vertSwimSpeedCopepodidStd=0.0001,
+    vertSwimSpeedNaupliusMean=-0.00025,
+    vertSwimSpeedNaupliusStd=0.00005,
+    sinkingRateMean=NULL,
+    sinkingRateStd=NULL,
+    sinkingRateCopepodidMean=0.001,
+    sinkingRateCopepodidStd=0.0002,
+    sinkingRateNaupliusMean=0.001,
+    sinkingRateNaupliusStd=0.0002,
     eggTemp_b0=28.2,
     eggTemp_b1=0,
     viabletime=-1,
@@ -182,8 +198,16 @@ set_biotracker_properties <- function(
     swimLightLevel=swimLightLevel,
     vertSwimSpeedMean=vertSwimSpeedMean,
     vertSwimSpeedStd=vertSwimSpeedStd,
+    vertSwimSpeedCopepodidMean=if_else(is.null(vertSwimSpeedMean), vertSwimSpeedCopepodidMean, vertSwimSpeedMean),
+    vertSwimSpeedCopepodidStd=if_else(is.null(vertSwimSpeedStd), vertSwimSpeedCopepodidStd, vertSwimSpeedStd),
+    vertSwimSpeedNaupliusMean=-if_else(is.null(vertSwimSpeedMean), vertSwimSpeedNaupliusMean, vertSwimSpeedMean),
+    vertSwimSpeedNaupliusStd=if_else(is.null(vertSwimSpeedStd), vertSwimSpeedNaupliusStd, vertSwimSpeedStd),
     sinkingRateMean=sinkingRateMean,
     sinkingRateStd=sinkingRateStd,
+    sinkingRateCopepodidMean=if_else(is.null(sinkingRateMean), sinkingRateCopepodidMean, sinkingRateMean),
+    sinkingRateCopepodidStd=if_else(is.null(sinkingRateStd), sinkingRateCopepodidStd, sinkingRateStd),
+    sinkingRateNaupliusMean=if_else(is.null(sinkingRateMean), sinkingRateNaupliusMean, sinkingRateMean),
+    sinkingRateNaupliusStd=if_else(is.null(sinkingRateStd), sinkingRateNaupliusStd, sinkingRateStd),
     eggTemp_b0=eggTemp_b0,
     eggTemp_b1=eggTemp_b1,
     viabletime=viabletime,

@@ -44,6 +44,8 @@ set_biotracker_properties(
   mortalityRate = 0.01,
   salinityMort = "true",
   swimLightLevel = "true",
+  lightLevelCopepodid = 2.06e-05,
+  lightLevelNauplius = 0.392,
   vertSwimSpeedMean = NULL,
   vertSwimSpeedStd = NULL,
   vertSwimSpeedCopepodidMean = -5e-04,
@@ -154,7 +156,11 @@ set_biotracker_properties(
 
 \item{salinityMort}{Calculate mortality based on salinity?}
 
-\item{swimLightLevel}{Should particles swim upward if light is sufficient?}
+\item{swimLightLevel}{Should particles swim upward if light is sufficient}
+
+\item{lightLevelCopepodid}{Light level (umol/m2/s) stimulating upward swimming}
+
+\item{lightLevelNauplius}{Light level (umol/m2/s) stimulating upward swimming}
 
 \item{vertSwimSpeedMean}{Mean upward swim speed (m/s)}
 

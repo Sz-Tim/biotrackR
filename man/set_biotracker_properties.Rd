@@ -46,18 +46,20 @@ set_biotracker_properties(
   swimLightLevel = "true",
   lightLevelCopepodid = 2.06e-05,
   lightLevelNauplius = 0.392,
-  vertSwimSpeedMean = NULL,
-  vertSwimSpeedStd = NULL,
-  vertSwimSpeedCopepodidMean = -5e-04,
-  vertSwimSpeedCopepodidStd = 1e-04,
-  vertSwimSpeedNaupliusMean = -0.00025,
-  vertSwimSpeedNaupliusStd = 5e-05,
-  sinkingRateMean = NULL,
-  sinkingRateStd = NULL,
-  sinkingRateCopepodidMean = 0.001,
-  sinkingRateCopepodidStd = 2e-04,
-  sinkingRateNaupliusMean = 0.001,
-  sinkingRateNaupliusStd = 2e-04,
+  swimUpSpeedMean = NULL,
+  swimUpSpeedStd = NULL,
+  swimUpSpeedCopepodidMean = -5e-04,
+  swimUpSpeedCopepodidStd = 1e-04,
+  swimUpSpeedNaupliusMean = -0.00025,
+  swimUpSpeedNaupliusStd = 5e-05,
+  swimDownSpeedMean = NULL,
+  swimDownSpeedStd = NULL,
+  swimDownSpeedCopepodidMean = 0.001,
+  swimDownSpeedCopepodidStd = 2e-04,
+  swimDownSpeedNaupliusMean = 0.001,
+  swimDownSpeedNaupliusStd = 2e-04,
+  passiveSinkingIntercept = 0.001527,
+  passiveSinkingSlope = -1.68e-05,
   eggTemp_b0 = 28.2,
   eggTemp_b1 = 0,
   viabletime = -1,
@@ -162,29 +164,33 @@ set_biotracker_properties(
 
 \item{lightLevelNauplius}{Light level (umol/m2/s) stimulating upward swimming}
 
-\item{vertSwimSpeedMean}{Mean upward swim speed (m/s)}
+\item{swimUpSpeedMean}{Mean upward swim speed (m/s)}
 
-\item{vertSwimSpeedStd}{SD for upward swim speed (m/s)}
+\item{swimUpSpeedStd}{SD for upward swim speed (m/s)}
 
-\item{vertSwimSpeedCopepodidMean}{Mean upward swim speed (m/s); ignored if vertSwimSpeedMean != NULL}
+\item{swimUpSpeedCopepodidMean}{Mean upward swim speed (m/s); ignored if swimUpSpeedMean != NULL}
 
-\item{vertSwimSpeedCopepodidStd}{SD for upward swim speed (m/s); ignored if vertSwimSpeedStd != NULL}
+\item{swimUpSpeedCopepodidStd}{SD for upward swim speed (m/s); ignored if swimUpSpeedStd != NULL}
 
-\item{vertSwimSpeedNaupliusMean}{Mean upward swim speed (m/s); ignored if vertSwimSpeedMean != NULL}
+\item{swimUpSpeedNaupliusMean}{Mean upward swim speed (m/s); ignored if swimUpSpeedMean != NULL}
 
-\item{vertSwimSpeedNaupliusStd}{SD for upward swim speed (m/s); ignored if vertSwimSpeedStd != NULL}
+\item{swimUpSpeedNaupliusStd}{SD for upward swim speed (m/s); ignored if swimUpSpeedStd != NULL}
 
-\item{sinkingRateMean}{Mean downward swimming speed (m/s)}
+\item{swimDownSpeedMean}{Mean downward swimming speed (m/s)}
 
-\item{sinkingRateStd}{SD for downward swimming speed (m/s)}
+\item{swimDownSpeedStd}{SD for downward swimming speed (m/s)}
 
-\item{sinkingRateCopepodidMean}{Mean downward swimming speed (m/s); ignored if sinkingRateMean != NULL}
+\item{swimDownSpeedCopepodidMean}{Mean downward swimming speed (m/s); ignored if swimDownSpeedMean != NULL}
 
-\item{sinkingRateCopepodidStd}{SD for downward swimming speed (m/s); ignored if sinkingRateStd != NULL}
+\item{swimDownSpeedCopepodidStd}{SD for downward swimming speed (m/s); ignored if swimDownSpeedStd != NULL}
 
-\item{sinkingRateNaupliusMean}{Mean downward swimming speed (m/s); ignored if sinkingRateMean != NULL}
+\item{swimDownSpeedNaupliusMean}{Mean downward swimming speed (m/s); ignored if swimDownSpeedMean != NULL}
 
-\item{sinkingRateNaupliusStd}{SD for downward swimming speed (m/s); ignored if sinkingRateStd != NULL}
+\item{swimDownSpeedNaupliusStd}{SD for downward swimming speed (m/s); ignored if swimDownSpeedStd != NULL}
+
+\item{passiveSinkingIntercept}{Intercept for passive sinking based on salinity}
+
+\item{passiveSinkingSlope}{Slope for passive sinking based on salinity}
 
 \item{eggTemp_b0}{Intercept for temperature-dependent egg production}
 

@@ -48,18 +48,20 @@
 #' @param swimLightLevel Should particles swim upward if light is sufficient
 #' @param lightLevelCopepodid Light level (umol/m2/s) stimulating upward swimming
 #' @param lightLevelNauplius Light level (umol/m2/s) stimulating upward swimming
-#' @param vertSwimSpeedMean Mean upward swim speed (m/s)
-#' @param vertSwimSpeedStd SD for upward swim speed (m/s)
-#' @param vertSwimSpeedCopepodidMean Mean upward swim speed (m/s); ignored if vertSwimSpeedMean != NULL
-#' @param vertSwimSpeedCopepodidStd SD for upward swim speed (m/s); ignored if vertSwimSpeedStd != NULL
-#' @param vertSwimSpeedNaupliusMean Mean upward swim speed (m/s); ignored if vertSwimSpeedMean != NULL
-#' @param vertSwimSpeedNaupliusStd SD for upward swim speed (m/s); ignored if vertSwimSpeedStd != NULL
-#' @param sinkingRateMean Mean downward swimming speed (m/s)
-#' @param sinkingRateStd SD for downward swimming speed (m/s)
-#' @param sinkingRateCopepodidMean Mean downward swimming speed (m/s); ignored if sinkingRateMean != NULL
-#' @param sinkingRateCopepodidStd SD for downward swimming speed (m/s); ignored if sinkingRateStd != NULL
-#' @param sinkingRateNaupliusMean Mean downward swimming speed (m/s); ignored if sinkingRateMean != NULL
-#' @param sinkingRateNaupliusStd SD for downward swimming speed (m/s); ignored if sinkingRateStd != NULL
+#' @param swimUpSpeedMean Mean upward swim speed (m/s)
+#' @param swimUpSpeedStd SD for upward swim speed (m/s)
+#' @param swimUpSpeedCopepodidMean Mean upward swim speed (m/s); ignored if swimUpSpeedMean != NULL
+#' @param swimUpSpeedCopepodidStd SD for upward swim speed (m/s); ignored if swimUpSpeedStd != NULL
+#' @param swimUpSpeedNaupliusMean Mean upward swim speed (m/s); ignored if swimUpSpeedMean != NULL
+#' @param swimUpSpeedNaupliusStd SD for upward swim speed (m/s); ignored if swimUpSpeedStd != NULL
+#' @param swimDownSpeedMean Mean downward swimming speed (m/s)
+#' @param swimDownSpeedStd SD for downward swimming speed (m/s)
+#' @param swimDownSpeedCopepodidMean Mean downward swimming speed (m/s); ignored if swimDownSpeedMean != NULL
+#' @param swimDownSpeedCopepodidStd SD for downward swimming speed (m/s); ignored if swimDownSpeedStd != NULL
+#' @param swimDownSpeedNaupliusMean Mean downward swimming speed (m/s); ignored if swimDownSpeedMean != NULL
+#' @param swimDownSpeedNaupliusStd SD for downward swimming speed (m/s); ignored if swimDownSpeedStd != NULL
+#' @param passiveSinkingIntercept Intercept for passive sinking based on salinity
+#' @param passiveSinkingSlope Slope for passive sinking based on salinity
 #' @param eggTemp_b0 Intercept for temperature-dependent egg production
 #' @param eggTemp_b1 Slope for temperature-dependent egg production
 #' @param viabletime Time at which particles become viable (h)
@@ -127,18 +129,20 @@ set_biotracker_properties <- function(
     swimLightLevel="true",
     lightLevelCopepodid=2.06e-5,
     lightLevelNauplius=0.392,
-    vertSwimSpeedMean=NULL,
-    vertSwimSpeedStd=NULL,
-    vertSwimSpeedCopepodidMean=-0.0005,
-    vertSwimSpeedCopepodidStd=0.0001,
-    vertSwimSpeedNaupliusMean=-0.00025,
-    vertSwimSpeedNaupliusStd=0.00005,
-    sinkingRateMean=NULL,
-    sinkingRateStd=NULL,
-    sinkingRateCopepodidMean=0.001,
-    sinkingRateCopepodidStd=0.0002,
-    sinkingRateNaupliusMean=0.001,
-    sinkingRateNaupliusStd=0.0002,
+    swimUpSpeedMean=NULL,
+    swimUpSpeedStd=NULL,
+    swimUpSpeedCopepodidMean=-0.0005,
+    swimUpSpeedCopepodidStd=0.0001,
+    swimUpSpeedNaupliusMean=-0.00025,
+    swimUpSpeedNaupliusStd=0.00005,
+    swimDownSpeedMean=NULL,
+    swimDownSpeedStd=NULL,
+    swimDownSpeedCopepodidMean=0.001,
+    swimDownSpeedCopepodidStd=0.0002,
+    swimDownSpeedNaupliusMean=0.001,
+    swimDownSpeedNaupliusStd=0.0002,
+    passiveSinkingIntercept=0.001527,
+    passiveSinkingSlope=-0.0000168,
     eggTemp_b0=28.2,
     eggTemp_b1=0,
     viabletime=-1,
@@ -202,18 +206,20 @@ set_biotracker_properties <- function(
     swimLightLevel=swimLightLevel,
     lightLevelCopepodid=lightLevelCopepodid-5,
     lightLevelNauplius=lightLevelNauplius,
-    vertSwimSpeedMean=vertSwimSpeedMean,
-    vertSwimSpeedStd=vertSwimSpeedStd,
-    vertSwimSpeedCopepodidMean=ifelse(is.null(vertSwimSpeedMean), vertSwimSpeedCopepodidMean, vertSwimSpeedMean),
-    vertSwimSpeedCopepodidStd=ifelse(is.null(vertSwimSpeedStd), vertSwimSpeedCopepodidStd, vertSwimSpeedStd),
-    vertSwimSpeedNaupliusMean=-ifelse(is.null(vertSwimSpeedMean), vertSwimSpeedNaupliusMean, vertSwimSpeedMean),
-    vertSwimSpeedNaupliusStd=ifelse(is.null(vertSwimSpeedStd), vertSwimSpeedNaupliusStd, vertSwimSpeedStd),
-    sinkingRateMean=sinkingRateMean,
-    sinkingRateStd=sinkingRateStd,
-    sinkingRateCopepodidMean=ifelse(is.null(sinkingRateMean), sinkingRateCopepodidMean, sinkingRateMean),
-    sinkingRateCopepodidStd=ifelse(is.null(sinkingRateStd), sinkingRateCopepodidStd, sinkingRateStd),
-    sinkingRateNaupliusMean=ifelse(is.null(sinkingRateMean), sinkingRateNaupliusMean, sinkingRateMean),
-    sinkingRateNaupliusStd=ifelse(is.null(sinkingRateStd), sinkingRateNaupliusStd, sinkingRateStd),
+    swimUpSpeedMean=swimUpSpeedMean,
+    swimUpSpeedStd=swimUpSpeedStd,
+    swimUpSpeedCopepodidMean=ifelse(is.null(swimUpSpeedMean), swimUpSpeedCopepodidMean, swimUpSpeedMean),
+    swimUpSpeedCopepodidStd=ifelse(is.null(swimUpSpeedStd), swimUpSpeedCopepodidStd, swimUpSpeedStd),
+    swimUpSpeedNaupliusMean=-ifelse(is.null(swimUpSpeedMean), swimUpSpeedNaupliusMean, swimUpSpeedMean),
+    swimUpSpeedNaupliusStd=ifelse(is.null(swimUpSpeedStd), swimUpSpeedNaupliusStd, swimUpSpeedStd),
+    swimDownSpeedMean=swimDownSpeedMean,
+    swimDownSpeedStd=swimDownSpeedStd,
+    swimDownSpeedCopepodidMean=ifelse(is.null(swimDownSpeedMean), swimDownSpeedCopepodidMean, swimDownSpeedMean),
+    swimDownSpeedCopepodidStd=ifelse(is.null(swimDownSpeedStd), swimDownSpeedCopepodidStd, swimDownSpeedStd),
+    swimDownSpeedNaupliusMean=ifelse(is.null(swimDownSpeedMean), swimDownSpeedNaupliusMean, swimDownSpeedMean),
+    swimDownSpeedNaupliusStd=ifelse(is.null(swimDownSpeedStd), swimDownSpeedNaupliusStd, swimDownSpeedStd),
+    passiveSinkingIntercept=passiveSinkingIntercept,
+    passiveSinkingSlope=passiveSinkingSlope,
     eggTemp_b0=eggTemp_b0,
     eggTemp_b1=eggTemp_b1,
     viabletime=viabletime,

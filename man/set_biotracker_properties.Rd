@@ -77,6 +77,11 @@ set_biotracker_properties(
   recordMovement = "false",
   recordElemActivity = "true",
   recordConnectivity = "true",
+  connectImmature = "false",
+  connectDepth1_min = 0,
+  connectDepth1_max = 10000,
+  connectDepth2_min = 10000,
+  connectDepth2_max = 10000,
   connectivityInterval = 24,
   connectivityThresh = 100,
   recordLocations = "false",
@@ -225,6 +230,16 @@ set_biotracker_properties(
 \item{recordElemActivity}{Record overall element/hourly particle activity?}
 
 \item{recordConnectivity}{Record connectivity (mature particles only) between sites?}
+
+\item{connectImmature}{Record connectivity for immature particles between sites?}
+
+\item{connectDepth1_min}{Minimum depth (m) of particles connectivity (depth range 1); default = 0}
+
+\item{connectDepth1_max}{Maximum depth (m) of particles connectivity (depth range 1); default = 10000}
+
+\item{connectDepth2_min}{Minimum depth (m) of particles connectivity (depth range 2); default (10000) causes biotracker to ignore depth range 2}
+
+\item{connectDepth2_max}{Maximum depth (m) of particles connectivity (depth range 2); default (10000) causes biotracker to ignore depth range 2}
 
 \item{connectivityInterval}{Connectivity recording frequency (h)}
 

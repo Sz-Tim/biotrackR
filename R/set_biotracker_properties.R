@@ -79,6 +79,11 @@
 #' @param recordMovement Record movement details for sample of particles?
 #' @param recordElemActivity Record overall element/hourly particle activity?
 #' @param recordConnectivity Record connectivity (mature particles only) between sites?
+#' @param connectImmature Record connectivity for immature particles between sites?
+#' @param connectDepth1_min Minimum depth (m) of particles connectivity (depth range 1); default = 0
+#' @param connectDepth1_max Maximum depth (m) of particles connectivity (depth range 1); default = 10000
+#' @param connectDepth2_min Minimum depth (m) of particles connectivity (depth range 2); default (10000) causes biotracker to ignore depth range 2
+#' @param connectDepth2_max Maximum depth (m) of particles connectivity (depth range 2); default (10000) causes biotracker to ignore depth range 2
 #' @param connectivityInterval Connectivity recording frequency (h)
 #' @param connectivityThresh Distance threshold for connectivity recording
 #' @param recordLocations Record hourly particle locations?
@@ -160,6 +165,11 @@ set_biotracker_properties <- function(
     recordMovement="false",
     recordElemActivity="true",
     recordConnectivity="true",
+    connectImmature="false",
+    connectDepth1_min=0,
+    connectDepth1_max=10000,
+    connectDepth2_min=10000,
+    connectDepth2_max=10000,
     connectivityInterval=24,
     connectivityThresh=100,
     recordLocations="false",
@@ -237,6 +247,11 @@ set_biotracker_properties <- function(
     recordMovement=recordMovement,
     recordElemActivity=recordElemActivity,
     recordConnectivity=recordConnectivity,
+    connectImmature=connectImmature,
+    connectDepth1_min=connectDepth1_min,
+    connectDepth1_max=connectDepth1_max,
+    connectDepth2_min=connectDepth2_min,
+    connectDepth2_max=connectDepth2_max,
     connectivityInterval=connectivityInterval,
     connectivityThresh=connectivityThresh,
     recordLocations=recordLocations,

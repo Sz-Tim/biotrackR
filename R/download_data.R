@@ -46,7 +46,7 @@ download_lice_counts <- function(begin_ymd, end_ymd, out_file) {
     file.remove("lice.zip")
     data_ls[[2]] <- read_csv("ms_sea_lice.csv", show_col_types=FALSE)|>
       clean_names(case="small_camel") |>
-      mutate(weekBeginning=dmy(weekBeginning),
+      mutate(weekBeginning=ymd(weekBeginning),
              day=day(weekBeginning),
              month=month(weekBeginning)) |>
       filter(between(weekBeginning, ymd(begin_ymd), ymd(end_ymd))) |>

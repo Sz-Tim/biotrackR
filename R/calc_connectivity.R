@@ -16,7 +16,8 @@ load_connectivity <- function(f, source_names, dest_names=NULL, liceScale=28.2*2
   read_csv(f, col_types="iid") |>
     mutate(source=factor(source, levels=seq_along(source_names)-1, labels=source_names),
            destination=factor(destination, levels=seq_along(dest_names)-1, labels=dest_names),
-           date=ymd(str_split_fixed(basename(f), "_", 3)[,2]),
+           date=ymd(str_split_fixed(basename(f), "_", 4)[,3]),
+           depthRange=str_split_fixed(basename(f), "_", 4)[,2],
            value=value*liceScale)
 }
 

@@ -82,7 +82,7 @@ download_fish_biomass <- function(begin_ymd, end_ymd, out_file) {
   library(tidyverse); library(janitor)
   fish_url <- "https://aquaculture.scotland.gov.uk/csvexport/se_monthly_reports.csv"
   download.file(fish_url, out_file)
-  data_df <- read_csv(out_file, show_col_types=FALSE) |>
+  data_df <- read.csv(out_file, stringsAsFactors=FALSE) |>
     clean_names(case="small_camel") |>
     mutate(date=dmy(year)) |>
     filter(between(date, ymd(begin_ymd), ymd(end_ymd))) |>

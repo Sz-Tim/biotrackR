@@ -46,8 +46,8 @@
 #' @param mortalityRate Mortality rate if salinityMort=false
 #' @param salinityMort Calculate mortality based on salinity?
 #' @param swimLightLevel Should particles swim upward if light is sufficient
-#' @param lightLevelCopepodid Light level (umol/m2/s) stimulating upward swimming
-#' @param lightLevelNauplius Light level (umol/m2/s) stimulating upward swimming
+#' @param lightThreshCopepodid Light level (umol/m2/s) stimulating upward swimming
+#' @param lightThreshNauplius Light level (umol/m2/s) stimulating upward swimming
 #' @param swimUpSpeedMean Mean upward swim speed (m/s)
 #' @param swimUpSpeedStd SD for upward swim speed (m/s)
 #' @param swimUpSpeedCopepodidMean Mean upward swim speed (m/s); ignored if swimUpSpeedMean != NULL
@@ -132,8 +132,8 @@ set_biotracker_properties <- function(
     mortalityRate=0.01,
     salinityMort="true",
     swimLightLevel="true",
-    lightLevelCopepodid=2.06e-5,
-    lightLevelNauplius=0.392,
+    lightThreshCopepodid=2.06e-5,
+    lightThreshNauplius=0.392,
     swimUpSpeedMean=NULL,
     swimUpSpeedStd=NULL,
     swimUpSpeedCopepodidMean=-0.0005,
@@ -214,8 +214,8 @@ set_biotracker_properties <- function(
     mortalityRate=mortalityRate,
     salinityMort=salinityMort,
     swimLightLevel=swimLightLevel,
-    lightLevelCopepodid=lightLevelCopepodid-5,
-    lightLevelNauplius=lightLevelNauplius,
+    lightThreshCopepodid=lightThreshCopepodid,
+    lightThreshNauplius=lightThreshNauplius,
     swimUpSpeedMean=swimUpSpeedMean,
     swimUpSpeedStd=swimUpSpeedStd,
     swimUpSpeedCopepodidMean=ifelse(is.null(swimUpSpeedMean), swimUpSpeedCopepodidMean, swimUpSpeedMean),

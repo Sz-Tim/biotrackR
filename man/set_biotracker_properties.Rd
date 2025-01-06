@@ -28,6 +28,7 @@ set_biotracker_properties(
   dt = 3600,
   maxDepth = 10000,
   parallelThreads = 4,
+  parallelThreadsHD = 1,
   releaseScenario = 1,
   releaseInterval = 1,
   nparts = 1,
@@ -134,6 +135,8 @@ set_biotracker_properties(
 \item{maxDepth}{Limit for particle depth (m, positive = deeper)}
 
 \item{parallelThreads}{Number of threads}
+
+\item{parallelThreadsHD}{Number of cores for reading HD .nc files}
 
 \item{releaseScenario}{1 = consistent release across time steps}
 

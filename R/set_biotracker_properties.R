@@ -31,6 +31,7 @@
 #' @param dt Time step
 #' @param maxDepth Limit for particle depth (m, positive = deeper)
 #' @param parallelThreads Number of threads
+#' @param parallelThreadsHD Number of cores for reading HD .nc files
 #' @param releaseScenario 1 = consistent release across time steps
 #' @param releaseInterval Interval (hours) for releaseScenario==1
 #' @param nparts Particles per site per release
@@ -116,6 +117,7 @@ set_biotracker_properties <- function(
     dt=3600,
     maxDepth=10000,
     parallelThreads=4,
+    parallelThreadsHD=1,
     releaseScenario=1,
     releaseInterval=1,
     nparts=1,
@@ -198,6 +200,7 @@ set_biotracker_properties <- function(
     dt=dt,
     maxDepth=maxDepth,
     parallelThreads=parallelThreads,
+    parallelThreadsHD=parallelThreadsHD,
     releaseScenario=releaseScenario,
     releaseInterval=releaseInterval,
     nparts=nparts,

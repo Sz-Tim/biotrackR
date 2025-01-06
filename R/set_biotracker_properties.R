@@ -223,7 +223,7 @@ set_biotracker_properties <- function(
     swimUpSpeedStd=swimUpSpeedStd,
     swimUpSpeedCopepodidMean=ifelse(is.null(swimUpSpeedMean), swimUpSpeedCopepodidMean, swimUpSpeedMean),
     swimUpSpeedCopepodidStd=ifelse(is.null(swimUpSpeedStd), swimUpSpeedCopepodidStd, swimUpSpeedStd),
-    swimUpSpeedNaupliusMean=-ifelse(is.null(swimUpSpeedMean), swimUpSpeedNaupliusMean, swimUpSpeedMean),
+    swimUpSpeedNaupliusMean=ifelse(is.null(swimUpSpeedMean), swimUpSpeedNaupliusMean, swimUpSpeedMean),
     swimUpSpeedNaupliusStd=ifelse(is.null(swimUpSpeedStd), swimUpSpeedNaupliusStd, swimUpSpeedStd),
     swimDownSpeedMean=swimDownSpeedMean,
     swimDownSpeedStd=swimDownSpeedStd,

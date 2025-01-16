@@ -6,7 +6,6 @@
 \usage{
 run_biotracker(
   jdk_path = "/usr/local/java/jre1.8.0_211/bin/java",
-  javaLib_path = "jar/lib/",
   jar_path = "/home/sa04ts/biotracker/jar/biotracker.jar",
   f_properties = "sim_01.properties",
   sim_dir = "sim_01/",
@@ -17,8 +16,6 @@ run_biotracker(
 }
 \arguments{
 \item{jdk_path}{Path to java jdk}
-
-\item{javaLib_path}{Path to commons-io-2.6.jar and netcdfAll-4.6.11.jar}
 
 \item{jar_path}{Path to biotracker.jar}
 

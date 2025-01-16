@@ -7,13 +7,18 @@
 set_biotracker_properties(
   properties_file_path = NULL,
   coordOS = "true",
-  datadir = "/media/archiver/common/sa01da-work/WeStCOMS2/Archive/",
+  mesh1 = "/home/sa04ts/hydro/meshes/WeStCOMS2_mesh.nc",
+  mesh1Type = "FVCOM",
+  mesh1Domain = "westcoms2",
+  datadir = "/home/sa04ts/hydro/WeStCOMS2/Archive/",
   datadirPrefix = "netcdf_",
   datadirSuffix = "",
-  mesh1 = "/home/sa04ts/FVCOM_meshes/WeStCOMS2_mesh.nc",
-  mesh1Type = "FVCOM",
-  location = "westcoms",
-  minchVersion = 2,
+  mesh2 = "",
+  mesh2Type = "FVCOM",
+  mesh2Domain = "westcoms2",
+  datadir2 = "/home/sa04ts/hydro/WeStCOMS2/Archive/",
+  datadir2Prefix = "netcdf_",
+  datadir2Suffix = "",
   sitefile = "../../data/farm_sites.csv",
   sitefileEnd = "../../data/farm_sites.csv",
   siteDensityPath = "",
@@ -76,7 +81,7 @@ set_biotracker_properties(
   vertDistrInterval = 1,
   vertDistrMax = 20,
   recordMovement = "false",
-  recordElemActivity = "true",
+  recordElemActivity = "false",
   recordConnectivity = "true",
   connectImmature = "false",
   connectDepth1_min = 0,
@@ -94,19 +99,29 @@ set_biotracker_properties(
 
 \item{coordOS}{Use OSGB1936 (EPSG 27700)? 'false' = WGS84 (EPSG 4326)}
 
+\item{mesh1}{Primary mesh file}
+
+\item{mesh1Type}{Primary mesh type}
+
+\item{mesh1Domain}{Primary domain, matching .nc file naming (e.g., 'westcoms2')}
+
 \item{datadir}{Primary data directory}
 
 \item{datadirPrefix}{Primary data file prefix}
 
 \item{datadirSuffix}{Primary data file suffix}
 
-\item{mesh1}{Primary mesh file}
+\item{mesh2}{Secondary mesh file}
 
-\item{mesh1Type}{Primary mesh type}
+\item{mesh2Type}{Secondary mesh type}
 
-\item{location}{Primary domain}
+\item{mesh2Domain}{Secondary mesh domain}
 
-\item{minchVersion}{Primary mesh WeStCOMS version}
+\item{datadir2}{Secondary data directory}
+
+\item{datadir2Prefix}{Secondary data file prefix}
+
+\item{datadir2Suffix}{Secondary data file suffix}
 
 \item{sitefile}{Site location file (csv with headers)}
 
@@ -253,16 +268,6 @@ set_biotracker_properties(
 \item{recordArrivals}{Record particle arrivals to sites?}
 
 \item{destinationDirectory}{Output directory}
-
-\item{datadir2}{Secondary data directory}
-
-\item{datadir2Prefix}{Secondary data file prefix}
-
-\item{datadir2Suffix}{Secondary data file suffix}
-
-\item{mesh2}{Secondary mesh file}
-
-\item{mesh2Type}{Secondary mesh type}
 
 \item{location2}{Secondary domain}
 

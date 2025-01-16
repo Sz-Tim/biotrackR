@@ -8,13 +8,13 @@
 #' @param datadirSuffix Primary data file suffix
 #' @param mesh1 Primary mesh file
 #' @param mesh1Type Primary mesh type
-#' @param location Primary domain
-#' @param minchVersion Primary mesh WeStCOMS version
+#' @param mesh1Domain Primary domain, matching .nc file naming (e.g., 'westcoms2')
 #' @param datadir2 Secondary data directory
 #' @param datadir2Prefix Secondary data file prefix
 #' @param datadir2Suffix Secondary data file suffix
 #' @param mesh2 Secondary mesh file
 #' @param mesh2Type Secondary mesh type
+#' @param mesh2Domain Secondary mesh domain
 #' @param location2 Secondary domain
 #' @param minchVersion2 Secondary mesh WeStCOMS version
 #' @param sitefile Site location file (csv with headers)
@@ -96,13 +96,18 @@
 set_biotracker_properties <- function(
     properties_file_path=NULL,
     coordOS="true",
-    datadir="/media/archiver/common/sa01da-work/WeStCOMS2/Archive/",
+    mesh1="/home/sa04ts/hydro/meshes/WeStCOMS2_mesh.nc",
+    mesh1Type="FVCOM",
+    mesh1Domain="westcoms2",
+    datadir="/home/sa04ts/hydro/WeStCOMS2/Archive/",
     datadirPrefix="netcdf_",
     datadirSuffix="",
-    mesh1="/home/sa04ts/FVCOM_meshes/WeStCOMS2_mesh.nc",
-    mesh1Type="FVCOM",
-    location="westcoms",
-    minchVersion=2,
+    mesh2="",
+    mesh2Type="FVCOM",
+    mesh2Domain="westcoms2",
+    datadir2="/home/sa04ts/hydro/WeStCOMS2/Archive/",
+    datadir2Prefix="netcdf_",
+    datadir2Suffix="",
     sitefile="../../data/farm_sites.csv",
     sitefileEnd="../../data/farm_sites.csv",
     siteDensityPath="",
@@ -165,7 +170,7 @@ set_biotracker_properties <- function(
     vertDistrInterval=1,
     vertDistrMax=20,
     recordMovement="false",
-    recordElemActivity="true",
+    recordElemActivity="false",
     recordConnectivity="true",
     connectImmature="false",
     connectDepth1_min=0,
@@ -179,13 +184,18 @@ set_biotracker_properties <- function(
 ) {
   params <- c(
     coordOS=coordOS,
+    mesh1=mesh1,
+    mesh1Type=mesh1Type,
+    mesh1Domain=mesh1Domain,
     datadir=datadir,
     datadirPrefix=datadirPrefix,
     datadirSuffix=datadirSuffix,
-    mesh1=mesh1,
-    mesh1Type=mesh1Type,
-    location=location,
-    minchVersion=minchVersion,
+    mesh2=mesh2,
+    mesh2Type=mesh2Type,
+    mesh2Domain=mesh2Domain,
+    datadir2=datadir2,
+    datadir2Prefix=datadir2Prefix,
+    datadir2Suffix=datadir2Suffix,
     sitefile=sitefile,
     sitefileEnd=sitefileEnd,
     siteDensityPath=siteDensityPath,

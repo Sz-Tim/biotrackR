@@ -66,8 +66,8 @@ set_biotracker_properties(
   swimDownSpeedNaupliusStd = 2e-04,
   passiveSinkingIntercept = 0.001527,
   passiveSinkingSlope = -1.68e-05,
-  eggTemp_b0 = 28.2,
-  eggTemp_b1 = 0,
+  eggTemp_fn = "constant",
+  eggTemp_b = "28.2",
   viabletime = -1,
   maxParticleAge = -1,
   viableDegreeDays = 40,
@@ -215,9 +215,9 @@ set_biotracker_properties(
 
 \item{passiveSinkingSlope}{Slope for passive sinking based on salinity}
 
-\item{eggTemp_b0}{Intercept for temperature-dependent egg production}
+\item{eggTemp_fn}{Function for temperature-dependent egg production; 'constant', 'linear', 'quadratic', or 'logistic'}
 
-\item{eggTemp_b1}{Slope for temperature-dependent egg production}
+\item{eggTemp_b}{Parameters for temperature-dependent egg production; comma-separated string}
 
 \item{viabletime}{Time at which particles become viable (h)}
 

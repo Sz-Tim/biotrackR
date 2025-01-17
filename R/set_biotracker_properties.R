@@ -63,8 +63,8 @@
 #' @param swimDownSpeedNaupliusStd SD for downward swimming speed (m/s); ignored if swimDownSpeedStd != NULL
 #' @param passiveSinkingIntercept Intercept for passive sinking based on salinity
 #' @param passiveSinkingSlope Slope for passive sinking based on salinity
-#' @param eggTemp_b0 Intercept for temperature-dependent egg production
-#' @param eggTemp_b1 Slope for temperature-dependent egg production
+#' @param eggTemp_fn Function for temperature-dependent egg production; 'constant', 'linear', 'quadratic', or 'logistic'
+#' @param eggTemp_b Parameters for temperature-dependent egg production; comma-separated string
 #' @param viabletime Time at which particles become viable (h)
 #' @param maxParticleAge Time at which particles die (h)
 #' @param viableDegreeDays Degree days at which particles become viable
@@ -155,8 +155,8 @@ set_biotracker_properties <- function(
     swimDownSpeedNaupliusStd=0.0002,
     passiveSinkingIntercept=0.001527,
     passiveSinkingSlope=-0.0000168,
-    eggTemp_b0=28.2,
-    eggTemp_b1=0,
+    eggTemp_fn="constant",
+    eggTemp_b="28.2",
     viabletime=-1,
     maxParticleAge=-1,
     viableDegreeDays=40,
@@ -243,8 +243,8 @@ set_biotracker_properties <- function(
     swimDownSpeedNaupliusStd=ifelse(is.null(swimDownSpeedStd), swimDownSpeedNaupliusStd, swimDownSpeedStd),
     passiveSinkingIntercept=passiveSinkingIntercept,
     passiveSinkingSlope=passiveSinkingSlope,
-    eggTemp_b0=eggTemp_b0,
-    eggTemp_b1=eggTemp_b1,
+    eggTemp_fn=eggTemp_fn,
+    eggTemp_b=eggTemp_b,
     viabletime=viabletime,
     maxParticleAge=maxParticleAge,
     viableDegreeDays=viableDegreeDays,

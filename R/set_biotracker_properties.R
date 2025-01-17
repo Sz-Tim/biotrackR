@@ -156,7 +156,7 @@ set_biotracker_properties <- function(
     passiveSinkingIntercept=0.001527,
     passiveSinkingSlope=-0.0000168,
     eggTemp_fn="constant",
-    eggTemp_b="28.2",
+    eggTemp_b="",
     viabletime=-1,
     maxParticleAge=-1,
     viableDegreeDays=40,

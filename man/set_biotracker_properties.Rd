@@ -67,7 +67,7 @@ set_biotracker_properties(
   passiveSinkingIntercept = 0.001527,
   passiveSinkingSlope = -1.68e-05,
   eggTemp_fn = "constant",
-  eggTemp_b = "28.2",
+  eggTemp_b = "",
   viabletime = -1,
   maxParticleAge = -1,
   viableDegreeDays = 40,

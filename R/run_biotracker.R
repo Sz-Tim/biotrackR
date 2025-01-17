@@ -11,12 +11,12 @@
 #' @return Reporting only
 #' @export
 #'
-run_biotracker <- function(jdk_path="/usr/local/java/jre1.8.0_211/bin/java",
+run_biotracker <- function(jdk_path="/home/sa04ts/.jdks/jdk-23.0.1/bin/java",
                            jar_path="/home/sa04ts/biotracker/jar/biotracker.jar",
                            f_properties="sim_01.properties",
                            sim_dir="sim_01/",
                            clean_output=TRUE,
-                           tar_output=TRUE,
+                           tar_output=FALSE,
                            save_tar_only=FALSE) {
 
   begin <- Sys.time()

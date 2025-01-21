@@ -44,8 +44,6 @@
 #' @param D_hVert Vertical diffusion coefficient
 #' @param salinityThreshMin Lower salinity threshold for sinking (all sink)
 #' @param salinityThreshMax Upper salinity threshold for sinking (none sink)
-#' @param mortalityRate Mortality rate if salinityMort=false
-#' @param salinityMort Calculate mortality based on salinity?
 #' @param swimLightLevel Should particles swim upward if light is sufficient
 #' @param lightThreshCopepodid Light level (umol/m2/s) stimulating upward swimming
 #' @param lightThreshNauplius Light level (umol/m2/s) stimulating upward swimming
@@ -65,6 +63,8 @@
 #' @param passiveSinkingSlope Slope for passive sinking based on salinity
 #' @param eggTemp_fn Function for temperature-dependent egg production; 'constant', 'linear', 'quadratic', or 'logistic'
 #' @param eggTemp_b Parameters for temperature-dependent egg production; comma-separated string
+#' @param mortSal_fn Function for salinity-dependent mortality; 'constant', 'quadratic', or 'logistic'
+#' @param mortSal_b Parameters for salinity-dependent mortality; comma-separated string
 #' @param viabletime Time at which particles become viable (h)
 #' @param maxParticleAge Time at which particles die (h)
 #' @param viableDegreeDays Degree days at which particles become viable
@@ -136,8 +136,6 @@ set_biotracker_properties <- function(
     D_hVert=0.001,
     salinityThreshMin=23,
     salinityThreshMax=31,
-    mortalityRate=0.01,
-    salinityMort="true",
     swimLightLevel="true",
     lightThreshCopepodid=2.06e-5,
     lightThreshNauplius=0.392,
@@ -157,6 +155,8 @@ set_biotracker_properties <- function(
     passiveSinkingSlope=-0.0000168,
     eggTemp_fn="constant",
     eggTemp_b="",
+    mortSal_fn="constant",
+    mortSal_b="",
     viabletime=-1,
     maxParticleAge=-1,
     viableDegreeDays=40,
@@ -224,8 +224,6 @@ set_biotracker_properties <- function(
     D_hVert=D_hVert,
     salinityThreshMin=salinityThreshMin,
     salinityThreshMax=salinityThreshMax,
-    mortalityRate=mortalityRate,
-    salinityMort=salinityMort,
     swimLightLevel=swimLightLevel,
     lightThreshCopepodid=lightThreshCopepodid,
     lightThreshNauplius=lightThreshNauplius,
@@ -245,6 +243,8 @@ set_biotracker_properties <- function(
     passiveSinkingSlope=passiveSinkingSlope,
     eggTemp_fn=eggTemp_fn,
     eggTemp_b=eggTemp_b,
+    mortSal_fn=mortSal_fn,
+    mortSal_b=mortSal_b,
     viabletime=viabletime,
     maxParticleAge=maxParticleAge,
     viableDegreeDays=viableDegreeDays,

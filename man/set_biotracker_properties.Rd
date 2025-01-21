@@ -47,8 +47,6 @@ set_biotracker_properties(
   D_hVert = 0.001,
   salinityThreshMin = 23,
   salinityThreshMax = 31,
-  mortalityRate = 0.01,
-  salinityMort = "true",
   swimLightLevel = "true",
   lightThreshCopepodid = 2.06e-05,
   lightThreshNauplius = 0.392,
@@ -68,6 +66,8 @@ set_biotracker_properties(
   passiveSinkingSlope = -1.68e-05,
   eggTemp_fn = "constant",
   eggTemp_b = "",
+  mortSal_fn = "constant",
+  mortSal_b = "",
   viabletime = -1,
   maxParticleAge = -1,
   viableDegreeDays = 40,
@@ -177,10 +177,6 @@ set_biotracker_properties(
 
 \item{salinityThreshMax}{Upper salinity threshold for sinking (none sink)}
 
-\item{mortalityRate}{Mortality rate if salinityMort=false}
-
-\item{salinityMort}{Calculate mortality based on salinity?}
-
 \item{swimLightLevel}{Should particles swim upward if light is sufficient}
 
 \item{lightThreshCopepodid}{Light level (umol/m2/s) stimulating upward swimming}
@@ -218,6 +214,10 @@ set_biotracker_properties(
 \item{eggTemp_fn}{Function for temperature-dependent egg production; 'constant', 'linear', 'quadratic', or 'logistic'}
 
 \item{eggTemp_b}{Parameters for temperature-dependent egg production; comma-separated string}
+
+\item{mortSal_fn}{Function for salinity-dependent mortality; 'constant', 'quadratic', or 'logistic'}
+
+\item{mortSal_b}{Parameters for salinity-dependent mortality; comma-separated string}
 
 \item{viabletime}{Time at which particles become viable (h)}
 

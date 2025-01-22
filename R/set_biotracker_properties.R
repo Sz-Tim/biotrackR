@@ -271,6 +271,7 @@ set_biotracker_properties <- function(
     recordArrivals=recordArrivals
   )
   if(params["eggTemp_b"]=="") params <- params[-which(names(params)=="eggTemp_b")]
+  if(params["mortSal_b"]=="") params <- params[-which(names(params)=="mortSal_b")]
 
   properties_out <- paste(names(params), params, sep="=", collapse="\n")
 

@@ -42,8 +42,10 @@
 #' @param variableDhV Include variable vertical diffusion? Uses WeStCOMS kh field
 #' @param D_h Horizontal diffusion coefficient
 #' @param D_hVert Vertical diffusion coefficient
-#' @param salinityThreshMin Lower salinity threshold for sinking (all sink)
-#' @param salinityThreshMax Upper salinity threshold for sinking (none sink)
+#' @param salinityThreshCopepodidMin Lower salinity threshold for sinking (all sink)
+#' @param salinityThreshCopepodidMax Upper salinity threshold for sinking (none sink)
+#' @param salinityThreshNaupliusMin Lower salinity threshold for sinking (all sink)
+#' @param salinityThreshNaupliusMax Upper salinity threshold for sinking (none sink)
 #' @param swimLightLevel Should particles swim upward if light is sufficient
 #' @param lightThreshCopepodid Light level (umol/m2/s) stimulating upward swimming
 #' @param lightThreshNauplius Light level (umol/m2/s) stimulating upward swimming
@@ -134,8 +136,10 @@ set_biotracker_properties <- function(
     variableDhV="false",
     D_h=0.1,
     D_hVert=0.001,
-    salinityThreshMin=23,
-    salinityThreshMax=31,
+    salinityThreshCopepodidMin=23,
+    salinityThreshCopepodidMax=31,
+    salinityThreshNaupliusMin=23,
+    salinityThreshNaupliusMax=31,
     swimLightLevel="true",
     lightThreshCopepodid=2.06e-5,
     lightThreshNauplius=0.392,
@@ -222,8 +226,10 @@ set_biotracker_properties <- function(
     variableDhV=variableDhV,
     D_h=D_h,
     D_hVert=D_hVert,
-    salinityThreshMin=salinityThreshMin,
-    salinityThreshMax=salinityThreshMax,
+    salinityThreshCopepodidMin=salinityThreshCopepodidMin,
+    salinityThreshCopepodidMax=salinityThreshCopepodidMax,
+    salinityThreshNaupliusMin=salinityThreshNaupliusMin,
+    salinityThreshNaupliusMax=salinityThreshNaupliusMax,
     swimLightLevel=swimLightLevel,
     lightThreshCopepodid=lightThreshCopepodid,
     lightThreshNauplius=lightThreshNauplius,

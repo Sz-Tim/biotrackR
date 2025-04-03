@@ -1,22 +1,23 @@
 #' Generate properties for biotracker
 #'
 #' @param properties_file_path filename for properties file; if NULL, character vector is returned only
-#' @param destinationDirectory Output directory
 #' @param coordOS Use OSGB1936 (EPSG 27700)? 'false' = WGS84 (EPSG 4326)
-#' @param datadir Primary data directory
-#' @param datadirPrefix Primary data file prefix
-#' @param datadirSuffix Primary data file suffix
-#' @param mesh1 Primary mesh file
-#' @param mesh1Type Primary mesh type
-#' @param mesh1Domain Primary domain, matching .nc file naming (e.g., 'westcoms2')
-#' @param datadir2 Secondary data directory
-#' @param datadir2Prefix Secondary data file prefix
-#' @param datadir2Suffix Secondary data file suffix
-#' @param mesh2 Secondary mesh file
-#' @param mesh2Type Secondary mesh type
-#' @param mesh2Domain Secondary mesh domain
-#' @param location2 Secondary domain
-#' @param minchVersion2 Secondary mesh WeStCOMS version
+#' @param hfDir0 Primary data directory
+#' @param hfDirPrefix0 Primary data directory prefix
+#' @param hfDirSuffix0 Primary data directory suffix
+#' @param mesh0 Primary mesh file
+#' @param meshType0 Primary mesh type
+#' @param hfFilePrefix0 Primary hydrodynamic file prefix (e.g., 'westcoms2')
+#' @param hfDir1 Secondary data directory
+#' @param hfDirPrefix1 Secondary data directory prefix
+#' @param hfDirSuffix1 Secondary data directory suffix
+#' @param mesh1 Secondary mesh file
+#' @param meshType1 Secondary mesh type
+#' @param hfFilePrefix1 Secondary hydrodynamic file prefix (e.g., 'etive28')
+#' @param hfDir2 SWAN wave model data directory
+#' @param hfDirPrefix2 SWAN wave model data directory prefix
+#' @param hfDirSuffix2 SWAN wave model data directory suffix
+#' @param hfFilePrefix2 SWAN wave model file prefix
 #' @param sitefile Site location file (csv with headers)
 #' @param sitefileEnd Site end location file (csv with headers)
 #' @param siteDensityPath Site lice density path (csv with headers; row = site, col = date)
@@ -35,13 +36,13 @@
 #' @param releaseScenario 1 = consistent release across time steps
 #' @param releaseInterval Interval (hours) for releaseScenario==1
 #' @param nparts Particles per site per release
-#' @param setStartDepth Set particle starting depth?
 #' @param startDepth Particle starting depth
 #' @param stepsPerStep RK4 steps per timestep
 #' @param variableDh Include variable horizontal diffusion? Uses WeStCOMS viscofh field
 #' @param variableDhV Include variable vertical diffusion? Uses WeStCOMS kh field
 #' @param D_h Horizontal diffusion coefficient
 #' @param D_hVert Vertical diffusion coefficient
+#' @param stokesDrift Include stokes drift? Requires setting \code{hf*2} arguments providing Hsig, Dir, and Tm01
 #' @param salinityThreshMin Lower salinity threshold for sinking (all sink)
 #' @param salinityThreshMax Upper salinity threshold for sinking (none sink)
 #' @param swimLightLevel Should particles swim upward if light is sufficient
@@ -96,18 +97,22 @@
 set_biotracker_properties <- function(
     properties_file_path=NULL,
     coordOS="true",
-    mesh1="/home/sa04ts/hydro/meshes/WeStCOMS2_mesh.nc",
-    mesh1Type="FVCOM",
-    mesh1Domain="westcoms2",
-    datadir="/home/sa04ts/hydro/WeStCOMS2/Archive/",
-    datadirPrefix="netcdf_",
-    datadirSuffix="",
-    mesh2="",
-    mesh2Type="FVCOM",
-    mesh2Domain="westcoms2",
-    datadir2="/home/sa04ts/hydro/WeStCOMS2/Archive/",
-    datadir2Prefix="netcdf_",
-    datadir2Suffix="",
+    mesh0="/home/sa04ts/hydro/meshes/WeStCOMS2_mesh.nc",
+    meshType0="FVCOM",
+    hfFilePrefix0="westcoms2",
+    hfDir0="/home/sa04ts/hydro/WeStCOMS2/Archive/",
+    hfDirPrefix0="netcdf_",
+    hfDirSuffix0="",
+    mesh1="",
+    meshType1="",
+    hfFilePrefix1="",
+    hfDir1="",
+    hfDirPrefix1="",
+    hfDirSuffix1="",
+    hfFilePrefix2="swan",
+    hfDir2="/home/sa04ts/hydro/WeStCOMS2/Archive_daily/",
+    hfDirPrefix2="netcdf_",
+    hfDirSuffix2="F",
     sitefile="../../data/farm_sites.csv",
     sitefileEnd="../../data/farm_sites.csv",
     siteDensityPath="",
@@ -122,11 +127,10 @@ set_biotracker_properties <- function(
     dt=3600,
     maxDepth=10000,
     parallelThreads=4,
-    parallelThreadsHD=1,
+    parallelThreadsHD=4,
     releaseScenario=1,
     releaseInterval=1,
     nparts=1,
-    setStartDepth="true",
     startDepth=1,
     fixDepth="false",
     stepsPerStep=30,
@@ -134,6 +138,7 @@ set_biotracker_properties <- function(
     variableDhV="false",
     D_h=0.1,
     D_hVert=0.001,
+    stokesDrift="false",
     salinityThreshMin=23,
     salinityThreshMax=31,
     swimLightLevel="true",
@@ -184,18 +189,22 @@ set_biotracker_properties <- function(
 ) {
   params <- c(
     coordOS=coordOS,
+    mesh0=mesh0,
+    meshType0=meshType0,
+    hfFilePrefix0=hfFilePrefix0,
+    hfDir0=hfDir0,
+    hfDirPrefix0=hfDirPrefix0,
+    hfDirSuffix0=hfDirSuffix0,
     mesh1=mesh1,
-    mesh1Type=mesh1Type,
-    mesh1Domain=mesh1Domain,
-    datadir=datadir,
-    datadirPrefix=datadirPrefix,
-    datadirSuffix=datadirSuffix,
-    mesh2=mesh2,
-    mesh2Type=mesh2Type,
-    mesh2Domain=mesh2Domain,
-    datadir2=datadir2,
-    datadir2Prefix=datadir2Prefix,
-    datadir2Suffix=datadir2Suffix,
+    meshType1=meshType1,
+    hfFilePrefix1=hfFilePrefix1,
+    hfDir1=hfDir1,
+    hfDirPrefix1=hfDirPrefix1,
+    hfDirSuffix1=hfDirSuffix1,
+    hfFilePrefix2=hfFilePrefix2,
+    hfDir2=hfDir2,
+    hfDirPrefix2=hfDirPrefix2,
+    hfDirSuffix2=hfDirSuffix2,
     sitefile=sitefile,
     sitefileEnd=sitefileEnd,
     siteDensityPath=siteDensityPath,
@@ -214,7 +223,6 @@ set_biotracker_properties <- function(
     releaseScenario=releaseScenario,
     releaseInterval=releaseInterval,
     nparts=nparts,
-    setStartDepth=setStartDepth,
     startDepth=startDepth,
     fixDepth=fixDepth,
     stepsPerStep=stepsPerStep,
@@ -222,6 +230,7 @@ set_biotracker_properties <- function(
     variableDhV=variableDhV,
     D_h=D_h,
     D_hVert=D_hVert,
+    stokesDrift=stokesDrift,
     salinityThreshMin=salinityThreshMin,
     salinityThreshMax=salinityThreshMax,
     swimLightLevel=swimLightLevel,

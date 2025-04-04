@@ -7,18 +7,22 @@
 set_biotracker_properties(
   properties_file_path = NULL,
   coordOS = "true",
-  mesh1 = "/home/sa04ts/hydro/meshes/WeStCOMS2_mesh.nc",
-  mesh1Type = "FVCOM",
-  mesh1Domain = "westcoms2",
-  datadir = "/home/sa04ts/hydro/WeStCOMS2/Archive/",
-  datadirPrefix = "netcdf_",
-  datadirSuffix = "",
-  mesh2 = "",
-  mesh2Type = "FVCOM",
-  mesh2Domain = "westcoms2",
-  datadir2 = "/home/sa04ts/hydro/WeStCOMS2/Archive/",
-  datadir2Prefix = "netcdf_",
-  datadir2Suffix = "",
+  mesh0 = "/home/sa04ts/hydro/meshes/WeStCOMS2_mesh.nc",
+  meshType0 = "FVCOM",
+  hfFilePrefix0 = "westcoms2",
+  hfDir0 = "/home/sa04ts/hydro/WeStCOMS2/Archive/",
+  hfDirPrefix0 = "netcdf_",
+  hfDirSuffix0 = "",
+  mesh1 = "",
+  meshType1 = "",
+  hfFilePrefix1 = "",
+  hfDir1 = "",
+  hfDirPrefix1 = "",
+  hfDirSuffix1 = "",
+  hfFilePrefix2 = "swan",
+  hfDir2 = "/home/sa04ts/hydro/WeStCOMS2/Archive_daily/",
+  hfDirPrefix2 = "netcdf_",
+  hfDirSuffix2 = "F",
   sitefile = "../../data/farm_sites.csv",
   sitefileEnd = "../../data/farm_sites.csv",
   siteDensityPath = "",
@@ -33,11 +37,10 @@ set_biotracker_properties(
   dt = 3600,
   maxDepth = 10000,
   parallelThreads = 4,
-  parallelThreadsHD = 1,
+  parallelThreadsHD = 4,
   releaseScenario = 1,
   releaseInterval = 1,
   nparts = 1,
-  setStartDepth = "true",
   startDepth = 1,
   fixDepth = "false",
   stepsPerStep = 30,
@@ -45,6 +48,7 @@ set_biotracker_properties(
   variableDhV = "false",
   D_h = 0.1,
   D_hVert = 0.001,
+  stokesDrift = "false",
   salinityThreshCopepodidMin = 23,
   salinityThreshCopepodidMax = 31,
   salinityThreshNaupliusMin = 23,
@@ -101,29 +105,37 @@ set_biotracker_properties(
 
 \item{coordOS}{Use OSGB1936 (EPSG 27700)? 'false' = WGS84 (EPSG 4326)}
 
-\item{mesh1}{Primary mesh file}
+\item{mesh0}{Primary mesh file}
 
-\item{mesh1Type}{Primary mesh type}
+\item{meshType0}{Primary mesh type}
 
-\item{mesh1Domain}{Primary domain, matching .nc file naming (e.g., 'westcoms2')}
+\item{hfFilePrefix0}{Primary hydrodynamic file prefix (e.g., 'westcoms2')}
 
-\item{datadir}{Primary data directory}
+\item{hfDir0}{Primary data directory}
 
-\item{datadirPrefix}{Primary data file prefix}
+\item{hfDirPrefix0}{Primary data directory prefix}
 
-\item{datadirSuffix}{Primary data file suffix}
+\item{hfDirSuffix0}{Primary data directory suffix}
 
-\item{mesh2}{Secondary mesh file}
+\item{mesh1}{Secondary mesh file}
 
-\item{mesh2Type}{Secondary mesh type}
+\item{meshType1}{Secondary mesh type}
 
-\item{mesh2Domain}{Secondary mesh domain}
+\item{hfFilePrefix1}{Secondary hydrodynamic file prefix (e.g., 'etive28')}
 
-\item{datadir2}{Secondary data directory}
+\item{hfDir1}{Secondary data directory}
 
-\item{datadir2Prefix}{Secondary data file prefix}
+\item{hfDirPrefix1}{Secondary data directory prefix}
 
-\item{datadir2Suffix}{Secondary data file suffix}
+\item{hfDirSuffix1}{Secondary data directory suffix}
+
+\item{hfFilePrefix2}{SWAN wave model file prefix}
+
+\item{hfDir2}{SWAN wave model data directory}
+
+\item{hfDirPrefix2}{SWAN wave model data directory prefix}
+
+\item{hfDirSuffix2}{SWAN wave model data directory suffix}
 
 \item{sitefile}{Site location file (csv with headers)}
 
@@ -161,8 +173,6 @@ set_biotracker_properties(
 
 \item{nparts}{Particles per site per release}
 
-\item{setStartDepth}{Set particle starting depth?}
-
 \item{startDepth}{Particle starting depth}
 
 \item{stepsPerStep}{RK4 steps per timestep}
@@ -175,6 +185,9 @@ set_biotracker_properties(
 
 \item{D_hVert}{Vertical diffusion coefficient}
 
+  
+\item{stokesDrift}{Include stokes drift? Requires setting \code{hf*2} arguments providing Hsig, Dir, and Tm01}
+  
 \item{salinityThreshCopepodidMin}{Lower salinity threshold for sinking (all sink)}
 
 \item{salinityThreshCopepodidMax}{Upper salinity threshold for sinking (none sink)}
@@ -272,12 +285,6 @@ set_biotracker_properties(
 \item{recordLocations}{Record hourly particle locations?}
 
 \item{recordArrivals}{Record particle arrivals to sites?}
-
-\item{destinationDirectory}{Output directory}
-
-\item{location2}{Secondary domain}
-
-\item{minchVersion2}{Secondary mesh WeStCOMS version}
 }
 \value{
 Character vector with all properties; if properties_file_path is set, output is written to that file (overwriting any existing file)

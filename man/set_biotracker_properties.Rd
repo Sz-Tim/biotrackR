@@ -49,6 +49,8 @@ set_biotracker_properties(
   D_h = 0.1,
   D_hVert = 0.001,
   stokesDrift = "false",
+  salinityThreshMin = NULL,
+  salinityThreshMax = NULL,
   salinityThreshCopepodidMin = 23,
   salinityThreshCopepodidMax = 31,
   salinityThreshNaupliusMin = 23,
@@ -185,16 +187,19 @@ set_biotracker_properties(
 
 \item{D_hVert}{Vertical diffusion coefficient}
 
-  
 \item{stokesDrift}{Include stokes drift? Requires setting \code{hf*2} arguments providing Hsig, Dir, and Tm01}
-  
-\item{salinityThreshCopepodidMin}{Lower salinity threshold for sinking (all sink)}
 
-\item{salinityThreshCopepodidMax}{Upper salinity threshold for sinking (none sink)}
+\item{salinityThreshMin}{Lower salinity threshold for sinking (all sink)}
 
-\item{salinityThreshNaupliusMin}{Lower salinity threshold for sinking (all sink)}
+\item{salinityThreshMax}{Upper salinity threshold for sinking (none sink)}
 
-\item{salinityThreshNaupliusMax}{Upper salinity threshold for sinking (none sink)}
+\item{salinityThreshCopepodidMin}{Lower salinity threshold for sinking (all sink); ignored if salinityThreshMin != NULL}
+
+\item{salinityThreshCopepodidMax}{Upper salinity threshold for sinking (none sink); ignored if salinityThreshMax != NULL}
+
+\item{salinityThreshNaupliusMin}{Lower salinity threshold for sinking (all sink); ignored if salinityThreshMin != NULL}
+
+\item{salinityThreshNaupliusMax}{Upper salinity threshold for sinking (none sink); ignored if salinityThreshMax != NULL}
 
 \item{swimLightLevel}{Should particles swim upward if light is sufficient}
 

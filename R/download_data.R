@@ -36,7 +36,8 @@ download_lice_counts <- function(begin_ymd, end_ymd, out_file) {
       clean_names(case="small_camel") |>
       mutate(weekBeginning=ymd(weekBeginning),
              day=day(weekBeginning),
-             month=month(weekBeginning)) |>
+             month=month(weekBeginning),
+             year=year(weekBeginning)) |>
       filter(between(weekBeginning, ymd(begin_ymd), ymd(end_ymd)))
     file.remove("lice_counts.json")
   }
@@ -48,7 +49,9 @@ download_lice_counts <- function(begin_ymd, end_ymd, out_file) {
       clean_names(case="small_camel") |>
       mutate(weekBeginning=ymd(weekBeginning),
              day=day(weekBeginning),
-             month=month(weekBeginning)) |>
+             month=month(weekBeginning),
+             year=year(weekBeginning),
+             weeklyAverageAf=as.numeric(weeklyAverageAf)) |>
       filter(between(weekBeginning, ymd(begin_ymd), ymd(end_ymd))) |>
       select(-easting, -northing, -nationalGridReference)
     file.remove("ms_sea_lice.csv")

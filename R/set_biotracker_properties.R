@@ -43,10 +43,12 @@
 #' @param D_h Horizontal diffusion coefficient
 #' @param D_hVert Vertical diffusion coefficient
 #' @param stokesDrift Include stokes drift? Requires setting \code{hf*2} arguments providing Hsig, Dir, and Tm01
-#' @param salinityThreshCopepodidMin Lower salinity threshold for sinking (all sink)
-#' @param salinityThreshCopepodidMax Upper salinity threshold for sinking (none sink)
-#' @param salinityThreshNaupliusMin Lower salinity threshold for sinking (all sink)
-#' @param salinityThreshNaupliusMax Upper salinity threshold for sinking (none sink)
+#' @param salinityThreshMin Lower salinity threshold for sinking (all sink)
+#' @param salinityThreshMax Upper salinity threshold for sinking (none sink)
+#' @param salinityThreshCopepodidMin Lower salinity threshold for sinking (all sink); ignored if salinityThreshMin != NULL
+#' @param salinityThreshCopepodidMax Upper salinity threshold for sinking (none sink); ignored if salinityThreshMax != NULL
+#' @param salinityThreshNaupliusMin Lower salinity threshold for sinking (all sink); ignored if salinityThreshMin != NULL
+#' @param salinityThreshNaupliusMax Upper salinity threshold for sinking (none sink); ignored if salinityThreshMax != NULL
 #' @param swimLightLevel Should particles swim upward if light is sufficient
 #' @param lightThreshCopepodid Light level (umol/m2/s) stimulating upward swimming
 #' @param lightThreshNauplius Light level (umol/m2/s) stimulating upward swimming
@@ -141,6 +143,8 @@ set_biotracker_properties <- function(
     D_h=0.1,
     D_hVert=0.001,
     stokesDrift="false",
+    salinityThreshMin=NULL,
+    salinityThreshMax=NULL,
     salinityThreshCopepodidMin=23,
     salinityThreshCopepodidMax=31,
     salinityThreshNaupliusMin=23,
@@ -235,10 +239,12 @@ set_biotracker_properties <- function(
     D_h=D_h,
     D_hVert=D_hVert,
     stokesDrift=stokesDrift,
-    salinityThreshCopepodidMin=salinityThreshCopepodidMin,
-    salinityThreshCopepodidMax=salinityThreshCopepodidMax,
-    salinityThreshNaupliusMin=salinityThreshNaupliusMin,
-    salinityThreshNaupliusMax=salinityThreshNaupliusMax,
+    salinityThreshMin=salinityThreshMin,
+    salinityThreshMax=salinityThreshMax,
+    salinityThreshCopepodidMin=ifelse(is.null(salinityThreshMin), salinityThreshCopepodidMin, salinityThreshMin),
+    salinityThreshCopepodidMax=ifelse(is.null(salinityThreshMax), salinityThreshCopepodidMax, salinityThreshMax),
+    salinityThreshNaupliusMin=ifelse(is.null(salinityThreshMin), salinityThreshNaupliusMin, salinityThreshMin),
+    salinityThreshNaupliusMax=ifelse(is.null(salinityThreshMax), salinityThreshNaupliusMax, salinityThreshMax),
     swimLightLevel=swimLightLevel,
     lightThreshCopepodid=lightThreshCopepodid,
     lightThreshNauplius=lightThreshNauplius,

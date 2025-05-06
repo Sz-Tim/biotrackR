@@ -302,7 +302,7 @@ set_biotracker_properties <- function(
           str_replace_all("\\\\", "\\\\\\\\") |>
           str_replace_all("\\ ", "\\\\\\\\ "),
         "\n", file=properties_file_path)
+  } else {
+    return(properties_out)
   }
-
-  return(properties_out)
 }

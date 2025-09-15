@@ -96,6 +96,8 @@ set_biotracker_properties(
   connectDepth1_max = 10000,
   connectDepth2_min = 10000,
   connectDepth2_max = 10000,
+  connectDepth3_min = 10000,
+  connectDepth3_max = 10000,
   connectivityInterval = 24,
   connectivityThresh = 100,
   recordLocations = "false",
@@ -282,6 +284,10 @@ set_biotracker_properties(
 \item{connectDepth2_min}{Minimum depth (m) of particles connectivity (depth range 2); default (10000) causes biotracker to ignore depth range 2}
 
 \item{connectDepth2_max}{Maximum depth (m) of particles connectivity (depth range 2); default (10000) causes biotracker to ignore depth range 2}
+
+\item{connectDepth3_min}{Minimum depth (m) of particles connectivity (depth range 3); default (10000) causes biotracker to ignore depth range 3}
+
+\item{connectDepth3_max}{Maximum depth (m) of particles connectivity (depth range 3); default (10000) causes biotracker to ignore depth range 3}
 
 \item{connectivityInterval}{Connectivity recording frequency (h)}
 

@@ -52,6 +52,7 @@
 #' @param swimLightLevel Should particles swim upward if light is sufficient
 #' @param lightThreshCopepodid Light level (umol/m2/s) stimulating upward swimming
 #' @param lightThreshNauplius Light level (umol/m2/s) stimulating upward swimming
+#' @param swimColdNauplius Do nauplii swim upward only if surface is colder (Crosbie et al 2020)
 #' @param swimUpSpeedMean Mean upward swim speed (m/s)
 #' @param swimUpSpeedStd SD for upward swim speed (m/s)
 #' @param swimUpSpeedCopepodidMean Mean upward swim speed (m/s); ignored if swimUpSpeedMean != NULL
@@ -90,6 +91,8 @@
 #' @param connectDepth1_max Maximum depth (m) of particles connectivity (depth range 1); default = 10000
 #' @param connectDepth2_min Minimum depth (m) of particles connectivity (depth range 2); default (10000) causes biotracker to ignore depth range 2
 #' @param connectDepth2_max Maximum depth (m) of particles connectivity (depth range 2); default (10000) causes biotracker to ignore depth range 2
+#' @param connectDepth3_min Minimum depth (m) of particles connectivity (depth range 3); default (10000) causes biotracker to ignore depth range 3
+#' @param connectDepth3_max Maximum depth (m) of particles connectivity (depth range 3); default (10000) causes biotracker to ignore depth range 3
 #' @param connectivityInterval Connectivity recording frequency (h)
 #' @param connectivityThresh Distance threshold for connectivity recording
 #' @param recordLocations Record hourly particle locations?
@@ -152,6 +155,7 @@ set_biotracker_properties <- function(
     swimLightLevel="true",
     lightThreshCopepodid=2.06e-5,
     lightThreshNauplius=0.392,
+    swimColdNauplius="false",
     swimUpSpeedMean=NULL,
     swimUpSpeedStd=NULL,
     swimUpSpeedCopepodidMean=-0.0005,
@@ -190,6 +194,8 @@ set_biotracker_properties <- function(
     connectDepth1_max=10000,
     connectDepth2_min=10000,
     connectDepth2_max=10000,
+    connectDepth3_min=10000,
+    connectDepth3_max=10000,
     connectivityInterval=24,
     connectivityThresh=100,
     recordLocations="false",
@@ -248,6 +254,7 @@ set_biotracker_properties <- function(
     swimLightLevel=swimLightLevel,
     lightThreshCopepodid=lightThreshCopepodid,
     lightThreshNauplius=lightThreshNauplius,
+    swimColdNauplius=swimColdNauplius,
     swimUpSpeedMean=swimUpSpeedMean,
     swimUpSpeedStd=swimUpSpeedStd,
     swimUpSpeedCopepodidMean=ifelse(is.null(swimUpSpeedMean), swimUpSpeedCopepodidMean, swimUpSpeedMean),
@@ -286,6 +293,8 @@ set_biotracker_properties <- function(
     connectDepth1_max=connectDepth1_max,
     connectDepth2_min=connectDepth2_min,
     connectDepth2_max=connectDepth2_max,
+    connectDepth3_min=connectDepth3_min,
+    connectDepth3_max=connectDepth3_max,
     connectivityInterval=connectivityInterval,
     connectivityThresh=connectivityThresh,
     recordLocations=recordLocations,
@@ -302,7 +311,7 @@ set_biotracker_properties <- function(
           str_replace_all("\\\\", "\\\\\\\\") |>
           str_replace_all("\\ ", "\\\\\\\\ "),
         "\n", file=properties_file_path)
+  } else {
+    return(properties_out)
   }
-
-  return(properties_out)
 }

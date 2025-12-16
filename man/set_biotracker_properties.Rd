@@ -58,6 +58,7 @@ set_biotracker_properties(
   swimLightLevel = "true",
   lightThreshCopepodid = 2.06e-05,
   lightThreshNauplius = 0.392,
+  swimColdNauplius = "false",
   swimUpSpeedMean = NULL,
   swimUpSpeedStd = NULL,
   swimUpSpeedCopepodidMean = -5e-04,
@@ -96,6 +97,8 @@ set_biotracker_properties(
   connectDepth1_max = 10000,
   connectDepth2_min = 10000,
   connectDepth2_max = 10000,
+  connectDepth3_min = 10000,
+  connectDepth3_max = 10000,
   connectivityInterval = 24,
   connectivityThresh = 100,
   recordLocations = "false",
@@ -207,6 +210,8 @@ set_biotracker_properties(
 
 \item{lightThreshNauplius}{Light level (umol/m2/s) stimulating upward swimming}
 
+\item{swimColdNauplius}{Do nauplii swim upward only if surface is colder (Crosbie et al 2020)}
+
 \item{swimUpSpeedMean}{Mean upward swim speed (m/s)}
 
 \item{swimUpSpeedStd}{SD for upward swim speed (m/s)}
@@ -282,6 +287,10 @@ set_biotracker_properties(
 \item{connectDepth2_min}{Minimum depth (m) of particles connectivity (depth range 2); default (10000) causes biotracker to ignore depth range 2}
 
 \item{connectDepth2_max}{Maximum depth (m) of particles connectivity (depth range 2); default (10000) causes biotracker to ignore depth range 2}
+
+\item{connectDepth3_min}{Minimum depth (m) of particles connectivity (depth range 3); default (10000) causes biotracker to ignore depth range 3}
+
+\item{connectDepth3_max}{Maximum depth (m) of particles connectivity (depth range 3); default (10000) causes biotracker to ignore depth range 3}
 
 \item{connectivityInterval}{Connectivity recording frequency (h)}
 

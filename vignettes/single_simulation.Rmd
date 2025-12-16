@@ -1,0 +1,184 @@
+---
+title: "Single biotracker simulation"
+author: "Tim M Szewczyk"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Vignette Title}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+
+# Setup
+
+The `biotracker` program reads the simulation settings from a properties file. This can be created manually or by using `set_biotracker_properties()`. It reads the mesh structure from a separate .nc file and reads only the necessary physical and environmental variables from the daily WeStCOMS hydrodynamic files. The hydrodynamic files are expected to be organized as on the SAMS THREDDS server: subdirectories for each year (`/netcdf_2024/`) and file names as `westcoms2_YYYYMMDD_*.nc`. 
+
+**Note:** Sometimes spaces within file paths cause issues. The simplest solution is to avoid them. 
+
+The directories and files all must be created prior to running `biotracker`. As an example, we will create a site file and a daily density file manually which will describe the habitat locations and the number of larvae released from each habitat each day of the simulation. The coordinates should be in OSGB1936 (EPSG:27700).
+
+It is cleanest to set up a list of directories and basic details:
+
+```{r}
+dirs <- list(jdk="C:/Users/sa04ts/.jdks/openjdk-23.0.2/bin/javaw",
+             jar="E:/biotracker/biotracker_v2-0-0.jar",
+             mesh="E:/hydro/",
+             hf="E:/hydro/WeStCOMS2/Archive/",
+             data="E:/biotracker/data_example/",
+             out="E:/biotracker/out_example/")
+dir.create(paste0(dirs$out, "single_simulation"), showWarnings=F, recursive=T)
+start_date <- 20240401
+nDays <- 7
+```
+
+
+```{r echo=FALSE}
+library(tidyverse)
+library(biotrackR)
+library(sf)
+```
+
+
+## Create site info
+
+```{r}
+site_df <- tibble(
+  site=c("A", "B", "C"),
+  easting=c(185465, 206146, 192370),
+  northing=c(752127, 770663, 750225)
+)
+write_csv(site_df, paste0(dirs$data, "sites.csv"))
+
+site_densities <- expand_grid(site=unique(site_df$site),
+                              date=ymd(start_date) + (1:nDays) - 1) |>
+  mutate(n_larvae=rpois(n(), 30)) |>
+  pivot_wider(names_from=date, values_from=n_larvae)
+write_csv(site_densities, paste0(dirs$data, "daily_density.csv"))
+```
+
+## Create properties file
+
+```{r results="hide"}
+set_biotracker_properties(
+       # run settings
+       properties_file_path=paste0(dirs$out, "single_simulation.properties"),
+       start_ymd=20240401,
+       numberOfDays=7,
+       # meshes and environment
+       mesh0=paste0(dirs$mesh, "WeStCOMS2_mesh.nc"),
+       meshType0="FVCOM",
+       hfDir0=dirs$hf,
+       hfDirPrefix0="netcdf_",
+       hfFilePrefix0="westcoms2",
+       # sites
+       sitefile=paste0(dirs$data, "sites.csv"),
+       sitefileEnd=paste0(dirs$data, "sites.csv"),
+       siteDensityPath=paste0(dirs$data, "daily_density.csv"),
+       # biology
+       viabletime=12,
+       maxParticleAge=1e4,
+       # recording
+       verboseSetUp="true",
+       recordConnectivity="true",
+       connectivityInterval=24,
+       connectivityThresh=50,
+       recordPsteps= "true",
+       pstepsInterval=24,
+       recordVertDistr="false",
+       recordElemActivity="false")
+```
+
+# Run simulation
+
+The `run_biotracker()` function requires arguments for the path to the javaw file within the jdk directory (`jdk_path`), the path to the biotracker.jar file (`jar_path`), the path to the properties file (`f_properties`), and the output directory (`sim_dir`). Other arguments control behaviour for organizing output into subdirectories based on file type and compressing to .tar.gz.
+
+```{r, eval=F}
+run_biotracker(
+  jdk_path=dirs$jdk,
+  jar_path=dirs$jar,
+  f_properties=paste0(dirs$out, "single_simulation.properties"),
+  sim_dir=paste0(dirs$out, "single_simulation/")
+)
+```
+
+The following message can be ignored:
+
+```
+SLF4J: Failed to load class "org.slf4j.impl.StaticLoggerBinder".
+SLF4J: Defaulting to no-operation (NOP) logger implementation
+SLF4J: See http://www.slf4j.org/codes.html#StaticLoggerBinder for further details.
+```
+
+# Processing output
+
+There are several functions for processing output from an individual run or from a set of simulations. 
+
+## Connectivity
+
+The pairwise connectivity between sites is tallied internally during the simulations, totalled within each connectivity file. The units are thus the units used in the `siteDensityPath` file per `connectivityInterval` in the properties file. For example, using 'number of larvae' in the site density file and setting `connectivityInterval=24` gives the total number of larvae expected to arrive per day. Setting the argument `liceScale` to the number of hours in each connectivity file will scale to hourly rates.
+
+```{r}
+c_df <- dir(dirs$out, "connectivity", recursive=T, full.names=T) |>
+  map_dfr(~load_connectivity(.x, source_names=site_df$site, liceScale=1/24)) |>
+  mutate(value_m2=value/(pi*50^2))
+c_df 
+
+# helper functions for summarizing influx, outflux, and self infection
+c_df |> calc_influx(dest_col=destination, N_col=value)
+c_df |> calc_influx(dest_col=destination, N_col=value_m2)
+# group by date
+c_df |> calc_influx(dest_col=destination, N_col=value, date)
+# outflux
+c_df |> calc_outflux(src_col=source, N_col=value)
+# dest_areas needs to be explicitly set to add grouping columns 
+c_df |> calc_outflux(src_col=source, N_col=value, dest_areas=NULL, date)
+# self infection
+c_df |> calc_self_infection(source, destination, value)
+```
+
+## Particle densities
+
+Particle densities within each mesh element are similarly tallied, with the aggregation controlled by the `pstepsInterval` property. 
+
+```{r}
+pSteps_df <- dir(dirs$out, "pstepsMature", recursive=T, full.names=T) |>
+  map_dfr(~load_psteps(.x, liceScale=1/24))
+pSteps_df
+pSteps_df <- pSteps_df[colSums(!is.na(pSteps_df)) > 0]
+pSteps_df <- pSteps_df |>
+  pivot_longer(starts_with("t_")) |>
+  drop_na() |>
+  mutate(date=ymd(start_date) + as.numeric(str_sub(name, 3, -1))/24) 
+pSteps_df
+```
+
+```{r, fig.width=8, fig.height=8}
+library(sf)
+mesh_sf <- dir(dirs$mesh, "WeStCOMS2_mesh.gpkg", full.names=T) |>
+  st_read()
+mesh_fp <- dir(dirs$mesh, "WeStCOMS2_meshFootprint.gpkg", full.names=T) |>
+  st_read()
+
+pSteps_sf <- inner_join(mesh_sf, pSteps_df, by="i")
+pBBox <- st_bbox(pSteps_sf)
+ggplot(pSteps_sf) + 
+  geom_sf(data=mesh_fp, fill="grey20") +
+  geom_sf(aes(fill=log(value/area)), colour=NA) + 
+  geom_text(data=site_df, aes(easting, northing, label=site), 
+            colour="white", size=3) +
+  scale_fill_viridis_c(option="turbo") + 
+  facet_wrap(~date) +
+  xlim(pBBox$xmin, pBBox$xmax) + 
+  ylim(pBBox$ymin, pBBox$ymax) + 
+  theme_dark()
+```
+
+

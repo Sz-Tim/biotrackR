@@ -95,6 +95,9 @@
 #' @param connectDepth3_max Maximum depth (m) of particles connectivity (depth range 3); default (10000) causes biotracker to ignore depth range 3
 #' @param connectivityInterval Connectivity recording frequency (h)
 #' @param connectivityThresh Distance threshold for connectivity recording
+#' @param recordSiteEnv Record vertically averaged environmental conditions at each site?
+#' @param siteEnvInterval Interval in hours for recording site conditions
+#' @param siteEnvMaxDepth Maximum depth for recording depth-averaged site conditions (from surface)
 #' @param recordLocations Record hourly particle locations?
 #' @param recordArrivals Record particle arrivals to sites?
 #'
@@ -198,6 +201,9 @@ set_biotracker_properties <- function(
     connectDepth3_max=10000,
     connectivityInterval=24,
     connectivityThresh=100,
+    recordSiteEnv="true",
+    siteEnvInterval=24,
+    siteEnvMaxDepth=30,
     recordLocations="false",
     recordArrivals="false"
 ) {
@@ -297,6 +303,9 @@ set_biotracker_properties <- function(
     connectDepth3_max=connectDepth3_max,
     connectivityInterval=connectivityInterval,
     connectivityThresh=connectivityThresh,
+    recordSiteEnv=recordSiteEnv,
+    siteEnvInterval=siteEnvInterval,
+    siteEnvMaxDepth=siteEnvMaxDepth,
     recordLocations=recordLocations,
     recordArrivals=recordArrivals
   )

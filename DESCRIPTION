@@ -7,6 +7,7 @@ Maintainer: Tim Szewczyk <tim.szewczyk@sams.ac.uk>
 Description: A collection of functions for working with biotracker via R.
     Biotracker is a Java-based particle tracking program built and maintained
     by SAMS (<github.com/Sz-Tim/biotracker>)
+Imports: tidyverse, furrr, future, carrier, data.table, janitor, jsonlite, glue
 License: What license is it under?
 Encoding: UTF-8
 LazyData: true

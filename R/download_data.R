@@ -1,4 +1,13 @@
 
+
+
+
+
+download_global_site_id <- function(out_file) {
+  url <- "https://aquaculture.scotland.gov.uk/xlsx/GlobalSiteIDScotlandsAquaculture.xlsx"
+}
+
+
 #' Download weekly Scottish sea lice counts
 #'
 #' Accessed through aquaculture.scotland.gov.uk. Downloads a json file from the
@@ -19,7 +28,6 @@
 #' @export
 #'
 download_lice_counts <- function(begin_ymd, end_ymd, out_file) {
-  library(jsonlite); library(tidyverse); library(janitor)
   webapp_yr <- year(today())
   download_yrs <- unique(year(seq(ymd(begin_ymd), ymd(end_ymd), by=1)))
 
@@ -82,7 +90,6 @@ download_lice_counts <- function(begin_ymd, end_ymd, out_file) {
 #' @export
 #'
 download_fish_biomass <- function(begin_ymd, end_ymd, out_file) {
-  library(tidyverse); library(janitor)
   fish_url <- "https://aquaculture.scotland.gov.uk/csvexport/se_monthly_reports.csv"
   download.file(fish_url, out_file)
   data_df <- read.csv(out_file, stringsAsFactors=FALSE) |>
@@ -109,7 +116,6 @@ download_fish_biomass <- function(begin_ymd, end_ymd, out_file) {
 #' @return Success message if csv is correctly saved
 #' @export
 download_ms_site_details <- function(out_file) {
-  library(tidyverse); library(janitor)
   ms_url <- "https://aquaculture.scotland.gov.uk/csvexport/ms_site_details.csv"
   download.file(ms_url, out_file)
   data_df <- read_csv(out_file, show_col_types=FALSE) |>
@@ -133,7 +139,6 @@ download_ms_site_details <- function(out_file) {
 #' @return Success message if csv is correctly saved
 #' @export
 download_sepa_licenses <- function(out_file) {
-  library(tidyverse); library(janitor)
   sepa_url <- "https://aquaculture.scotland.gov.uk/csvexport/se_licence_conditions.csv"
   download.file(sepa_url, out_file)
   data_df <- read_csv(out_file, show_col_types=FALSE) |>

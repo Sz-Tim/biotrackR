@@ -90,7 +90,7 @@ download_lice_counts <- function(begin_ymd, end_ymd, out_file) {
 #' @export
 #'
 download_fish_biomass <- function(begin_ymd, end_ymd, out_file) {
-  fish_url <- "https://aquaculture.scotland.gov.uk/csvexport/se_monthly_reports.csv"
+  fish_url <- "https://aquaculture.scotland.gov.uk/csv/se_monthly_reports.csv"
   download.file(fish_url, out_file)
   data_df <- read.csv(out_file, stringsAsFactors=FALSE) |>
     clean_names(case="small_camel") |>
@@ -116,7 +116,7 @@ download_fish_biomass <- function(begin_ymd, end_ymd, out_file) {
 #' @return Success message if csv is correctly saved
 #' @export
 download_ms_site_details <- function(out_file) {
-  ms_url <- "https://aquaculture.scotland.gov.uk/csvexport/ms_site_details.csv"
+  ms_url <- "https://aquaculture.scotland.gov.uk/csv/ms_site_details.csv"
   download.file(ms_url, out_file)
   data_df <- read_csv(out_file, show_col_types=FALSE) |>
     clean_names(case="small_camel")
@@ -139,7 +139,7 @@ download_ms_site_details <- function(out_file) {
 #' @return Success message if csv is correctly saved
 #' @export
 download_sepa_licenses <- function(out_file) {
-  sepa_url <- "https://aquaculture.scotland.gov.uk/csvexport/se_licence_conditions.csv"
+  sepa_url <- "https://aquaculture.scotland.gov.uk/csv/se_permit_conditions.csv"
   download.file(sepa_url, out_file)
   data_df <- read_csv(out_file, show_col_types=FALSE) |>
     clean_names(case="small_camel")

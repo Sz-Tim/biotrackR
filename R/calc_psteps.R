@@ -42,7 +42,7 @@ load_psteps <- function(f, site_names=NULL, liceScale=28.2*240) {
   timestep <- str_sub(str_split_fixed(basename(f), "_", 3)[,3], 1, -5)
   if(is.null(site_names)) {
     # Densities already summed in column 3 by biotracker; element index in col 1
-    f_df <- fread(f, select=c(1,3), colClasses=c("integer", "numeric")) |>
+    f_df <- fread(f, colClasses=list(integer=1, NULL=2, numeric=3)) |>
       as_tibble() |>
       rename_with(.fn=~paste0("t_", timestep), .cols="value")
     if(nrow(f_df) > 0) {

@@ -141,7 +141,7 @@ download_ms_site_details <- function(out_file) {
 download_sepa_licenses <- function(out_file) {
   sepa_url <- "https://aquaculture.scotland.gov.uk/csv/se_permit_conditions.csv"
   download.file(sepa_url, out_file)
-  data_df <- read_csv(out_file, show_col_types=FALSE) |>
+  data_df <- read.csv(out_file) |>
     clean_names(case="small_camel")
   data_df |>
     write_csv(out_file)

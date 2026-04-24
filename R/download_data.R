@@ -28,45 +28,34 @@ download_global_site_id <- function(out_file) {
 #' @export
 #'
 download_lice_counts <- function(begin_ymd, end_ymd, out_file) {
-  webapp_yr <- year(today())
   download_yrs <- unique(year(seq(ymd(begin_ymd), ymd(end_ymd), by=1)))
 
   data_ls <- vector("list", 2)
-  if(webapp_yr %in% download_yrs) {
-    lice_url <- paste0("https://utility.arcgis.com/usrsvcs/servers/",
-                       "8999c2e86c7246cb93b420e810458293/rest/services/Secure/",
-                       "Sealice/MapServer/2/query?f=json&where=1%3D1&",
-                       "returnGeometry=false&spatialRel=esriSpatialRelIntersects&",
-                       "outFields=*&orderByFields=WEEK_BEGINNING%20DESC&outSR=4326&",
-                       "resultOffset=0&resultRecordCount=100000")
-    download.file(lice_url, "lice_counts.json")
-    data_ls[[1]] <- fromJSON("lice_counts.json")$features$attributes |>
-      clean_names(case="small_camel") |>
-      mutate(weekBeginning=ymd(weekBeginning),
-             day=day(weekBeginning),
-             month=month(weekBeginning),
-             year=year(weekBeginning)) |>
-      filter(between(weekBeginning, ymd(begin_ymd), ymd(end_ymd)))
-    file.remove("lice_counts.json")
+  if(any(download_yrs %in% year(today()))) {
+    data_ls[[1]] <- url("https://aquaculture.scotland.gov.uk/csv/ms_sea_lice_current.csv") |>
+      read_csv(show_col_types=FALSE) |>
+      clean_names(case="small_camel")
+
   }
-  if(any(download_yrs != webapp_yr)) {
+  if(any(! download_yrs %in% year(today()))) {
     download.file("https://map.sepa.org.uk/sealice/ms_sea_lice.zip", "lice.zip")
     untar("lice.zip")
     file.remove("lice.zip")
-    data_ls[[2]] <- read_csv("ms_sea_lice.csv", show_col_types=FALSE)|>
-      clean_names(case="small_camel") |>
-      mutate(weekBeginning=ymd(weekBeginning),
-             day=day(weekBeginning),
-             month=month(weekBeginning),
-             year=year(weekBeginning),
-             weeklyAverageAf=as.numeric(weeklyAverageAf)) |>
-      filter(between(weekBeginning, ymd(begin_ymd), ymd(end_ymd))) |>
-      select(-easting, -northing, -nationalGridReference)
+    data_ls[[2]] <- read_csv("ms_sea_lice.csv", show_col_types=FALSE) |>
+      clean_names(case="small_camel")
     file.remove("ms_sea_lice.csv")
   }
 
   data_df <- data_ls |>
-    reduce(bind_rows)
+    reduce(bind_rows) |>
+    mutate(weekBeginning=ymd(weekBeginning),
+           day=day(weekBeginning),
+           month=month(weekBeginning),
+           year=year(weekBeginning),
+           weeklyAverageAf=as.numeric(weeklyAverageAf)) |>
+    filter(between(weekBeginning, ymd(begin_ymd), ymd(end_ymd))) |>
+    select(-easting, -northing, -nationalGridReference) |>
+    arrange(weekBeginning, siteNo)
   data_df |>
     write_csv(out_file)
   cat(nrow(data_df), "records saved to", out_file, "\n")

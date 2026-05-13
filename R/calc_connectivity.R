@@ -9,16 +9,16 @@
 #' @export
 #'
 load_connectivity <- function(f, source_names, dest_names=NULL, liceScale=28.2*240) {
-  library(tidyverse)
   if(is.null(dest_names)) {
     dest_names <- source_names
   }
-  read_csv(f, col_types="iid") |>
-    mutate(source=factor(source, levels=seq_along(source_names)-1, labels=source_names),
+  fread(f, colClasses=c("integer", "integer", "numeric"))[
+    , `:=`(source=factor(source, levels=seq_along(source_names)-1, labels=source_names),
            destination=factor(destination, levels=seq_along(dest_names)-1, labels=dest_names),
            date=ymd(str_split_fixed(basename(f), "_", 4)[,3]),
            depthRange=str_split_fixed(basename(f), "_", 4)[,2],
-           value=value*liceScale)
+           value=value*liceScale)] |>
+    as_tibble()
 }
 
 
@@ -37,7 +37,6 @@ load_connectivity <- function(f, source_names, dest_names=NULL, liceScale=28.2*2
 #' @export
 #'
 calc_influx <- function(data, dest_col, N_col, ...) {
-  library(tidyverse)
   data |>
     group_by({{dest_col}}, ...) |>
     summarise(influx=sum({{N_col}}),
@@ -60,7 +59,6 @@ calc_influx <- function(data, dest_col, N_col, ...) {
 #' @export
 #'
 calc_self_infection <- function(data, src_col, dest_col, N_col, ...) {
-  library(tidyverse)
   data |>
     filter({{src_col}} == {{dest_col}}) |>
     group_by({{src_col}}, ...) |>
@@ -87,7 +85,6 @@ calc_self_infection <- function(data, src_col, dest_col, N_col, ...) {
 #' @export
 #'
 calc_outflux <- function(data, src_col, N_col, dest_areas=NULL, ...) {
-  library(tidyverse)
   if(is.null(dest_areas)) {
     data |>
       group_by({{src_col}}, ...) |>

@@ -101,6 +101,9 @@ set_biotracker_properties(
   connectDepth3_max = 10000,
   connectivityInterval = 24,
   connectivityThresh = 100,
+  recordSiteEnv = "true",
+  siteEnvInterval = 24,
+  siteEnvMaxDepth = 30,
   recordLocations = "false",
   recordArrivals = "false"
 )
@@ -295,6 +298,12 @@ set_biotracker_properties(
 \item{connectivityInterval}{Connectivity recording frequency (h)}
 
 \item{connectivityThresh}{Distance threshold for connectivity recording}
+
+\item{recordSiteEnv}{Record vertically averaged environmental conditions at each site?}
+
+\item{siteEnvInterval}{Interval in hours for recording site conditions}
+
+\item{siteEnvMaxDepth}{Maximum depth for recording depth-averaged site conditions (from surface)}
 
 \item{recordLocations}{Record hourly particle locations?}
 

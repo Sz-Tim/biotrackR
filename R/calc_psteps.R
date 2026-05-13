@@ -10,12 +10,13 @@
 #' @export
 #'
 load_vertDistr <- function(f, liceScale=28.2*240) {
-  library(tidyverse)
   timestep <- str_sub(str_split_fixed(basename(f), "_", 3)[,3], 1, -5)
-  read_csv(f, col_types="iid") |>
-    mutate(i=i+1,
-           hour=timestep,
-           value=value*liceScale)
+
+  fread(f, colClasses=c("integer", "integer", "numeric"))[
+  , `:=`(i=i+1,
+         hour=timestep,
+         value=value*liceScale)] |>
+    as_tibble()
 }
 
 
@@ -38,11 +39,11 @@ load_vertDistr <- function(f, liceScale=28.2*240) {
 #' @export
 #'
 load_psteps <- function(f, site_names=NULL, liceScale=28.2*240) {
-  library(tidyverse)
   timestep <- str_sub(str_split_fixed(basename(f), "_", 3)[,3], 1, -5)
   if(is.null(site_names)) {
     # Densities already summed in column 3 by biotracker; element index in col 1
-    f_df <- read_csv(f, col_select=c(1,3), col_types="id") |>
+    f_df <- fread(f, colClasses=list(integer=1, NULL=2, numeric=3)) |>
+      as_tibble() |>
       rename_with(.fn=~paste0("t_", timestep), .cols="value")
     if(nrow(f_df) > 0) {
       f_df <- f_df |>
@@ -84,7 +85,6 @@ load_vertDistr_simSets <- function(out_dir, mesh_i, sim_i, ncores=4,
                                    stage="Mature", liceScale=28.2*240,
                                    per_m2=FALSE, trans=NULL,
                                    date_rng) {
-  library(tidyverse); library(glue); library(furrr)
   date_grep <- seq(ymd(date_rng[1]), ymd(date_rng[2]), by=1) |>
     paste0(collapse="|") |> str_remove_all("-")
   plan(multisession, workers=ncores)
@@ -142,7 +142,6 @@ load_vertDistr_simSets <- function(out_dir, mesh_i, sim_i, ncores=4,
 load_psteps_simSets <- function(out_dir, mesh_i, sim_i, ncores=4,
                                 stage="Mature", liceScale=28.2*240,
                                 per_m2=TRUE, trans=NULL) {
-  library(tidyverse); library(glue); library(furrr)
   plan(multisession, workers=ncores)
   ps_wide <- map_dfr(sim_i$sim,
                      ~dir(glue("{out_dir}/{.x}"), glue("psteps{stage}.*csv"),
@@ -200,7 +199,6 @@ load_psteps_simSets <- function(out_dir, mesh_i, sim_i, ncores=4,
 #' @export
 #'
 calc_psteps_diff_lnN <- function(ps_wide, sims_comp, ncores=4) {
-  library(tidyverse); library(furrr); library(carrier)
 
   crate_diff <- crate(
     function(x) {
@@ -258,7 +256,6 @@ calc_psteps_diff_lnN <- function(ps_wide, sims_comp, ncores=4) {
 #' @export
 #'
 calc_psteps_diff <- function(ps_wide, sims_comp, ncores=4) {
-  library(tidyverse); library(furrr); library(carrier)
 
   crate_diff <- crate(
     function(x) {
@@ -310,7 +307,6 @@ calc_psteps_diff <- function(ps_wide, sims_comp, ncores=4) {
 #' @return Dataframe with averaged particle densities according to the \code{grp_col} columns.
 #' @export
 calc_psteps_avg <- function(ps_long, y_col, grp_col=NULL, ncores=4, mesh_sf=NULL) {
-  library(tidyverse); library(furrr); library(carrier)
 
   crate_summary <- crate(~data.frame(pOcc=mean(!is.na(.x)),
                                      mean_N=mean(.x, na.rm=T),

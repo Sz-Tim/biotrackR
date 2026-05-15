@@ -52,7 +52,7 @@
 #' @param swimLightLevel Should particles swim upward if light is sufficient
 #' @param lightThreshCopepodid Light level (umol/m2/s) stimulating upward swimming
 #' @param lightThreshNauplius Light level (umol/m2/s) stimulating upward swimming
-#' @param swimColdNauplius Do nauplii swim upward only if surface is colder (Crosbie et al 2020)
+#' @param tempPrefNauplius Nauplius temperature preference: "none" (default), "warm", or "cold" (Crosbie 2020; á Norði 2015)
 #' @param swimUpSpeedMean Mean upward swim speed (m/s)
 #' @param swimUpSpeedStd SD for upward swim speed (m/s)
 #' @param swimUpSpeedCopepodidMean Mean upward swim speed (m/s); ignored if swimUpSpeedMean != NULL
@@ -158,7 +158,7 @@ set_biotracker_properties <- function(
     swimLightLevel="true",
     lightThreshCopepodid=2.06e-5,
     lightThreshNauplius=0.392,
-    swimColdNauplius="false",
+    tempPrefNauplius="none",
     swimUpSpeedMean=NULL,
     swimUpSpeedStd=NULL,
     swimUpSpeedCopepodidMean=-0.0005,
@@ -260,7 +260,7 @@ set_biotracker_properties <- function(
     swimLightLevel=swimLightLevel,
     lightThreshCopepodid=lightThreshCopepodid,
     lightThreshNauplius=lightThreshNauplius,
-    swimColdNauplius=swimColdNauplius,
+    tempPrefNauplius=tempPrefNauplius,
     swimUpSpeedMean=swimUpSpeedMean,
     swimUpSpeedStd=swimUpSpeedStd,
     swimUpSpeedCopepodidMean=ifelse(is.null(swimUpSpeedMean), swimUpSpeedCopepodidMean, swimUpSpeedMean),

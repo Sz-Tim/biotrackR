@@ -58,7 +58,7 @@ set_biotracker_properties(
   swimLightLevel = "true",
   lightThreshCopepodid = 2.06e-05,
   lightThreshNauplius = 0.392,
-  swimColdNauplius = "false",
+  tempPrefNauplius = "none",
   swimUpSpeedMean = NULL,
   swimUpSpeedStd = NULL,
   swimUpSpeedCopepodidMean = -5e-04,
@@ -213,7 +213,7 @@ set_biotracker_properties(
 
 \item{lightThreshNauplius}{Light level (umol/m2/s) stimulating upward swimming}
 
-\item{swimColdNauplius}{Do nauplii swim upward only if surface is colder (Crosbie et al 2020)}
+\item{tempPrefNauplius}{Nauplius temperature preference: "none" (default), "warm", or "cold" (Crosbie 2020; á Norði 2015)}
 
 \item{swimUpSpeedMean}{Mean upward swim speed (m/s)}
 
